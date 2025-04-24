@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Profile</title>
+    <!-- Using Bootstrap for quick styling -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* Optional: Basic styling */
         body { padding: 20px; background-color: #f8f9fa; }
-        .container { max-width: 600px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .container { max-width: 600px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-top: 20px; }
         footer { margin-top: 30px; text-align: center; color: #6c757d; }
     </style>
 </head>
@@ -15,23 +17,25 @@
 
     <div class="container">
         <h1 class="mb-4 text-center">Add New ID Profile</h1>
+        <!-- Area for showing success/error messages -->
         <div id="message-area" class="mb-3"></div>
 
+        <!-- The form for adding profiles -->
         <form id="add-profile-form">
             <div class="mb-3">
                 <label for="image-url" class="form-label">Image URL</label>
                 <input type="url" class="form-control" id="image-url" placeholder="https://example.com/image.jpg" required>
-                <small class="form-text text-muted">Paste the full web address of the image.</small>
+                <small class="form-text text-muted">Paste the full web address (URL) of an image.</small>
             </div>
 
             <div class="row mb-3">
                <div class="col-md-6">
                     <label for="id-level" class="form-label">ID Level</label>
-                    <input type="text" class="form-control" id="id-level" required>
+                    <input type="text" class="form-control" id="id-level" placeholder="e.g., Level 5" required>
                 </div>
                 <div class="col-md-6">
                     <label for="group-level" class="form-label">Group Level</label>
-                    <input type="text" class="form-control" id="group-level" required>
+                    <input type="text" class="form-control" id="group-level" placeholder="e.g., Alpha" required>
                 </div>
             </div>
 
@@ -39,23 +43,24 @@
                 <label for="price" class="form-label">Price</label>
                 <div class="input-group">
                     <span class="input-group-text">$</span>
-                    <input type="number" step="0.01" min="0" class="form-control" id="price" required>
+                    <input type="number" step="0.01" min="0" class="form-control" id="price" placeholder="e.g., 99.50" required>
                 </div>
             </div>
 
+            <!-- Buttons -->
             <div class="d-grid gap-2">
                  <button type="submit" class="btn btn-primary">Add Profile to List</button>
-                 <!-- **** LINK UPDATED TO POINT TO VIEWING PAGE **** -->
+                 <!-- Link to the viewing page -->
                  <a href="profiles.html" class="btn btn-secondary">View Saved Profiles</a>
-                 <!-- **** LINK UPDATED TO POINT TO VIEWING PAGE **** -->
             </div>
         </form>
     </div>
 
-    <footer>
-        <p>© 2023 Simple Data Entry</p>
+    <footer class="container">
+        <p>© 2023 Simple Profile Manager (localStorage)</p>
     </footer>
 
+    <!-- JavaScript for handling the form -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('add-profile-form');
@@ -63,14 +68,15 @@
 
             // --- Function to show messages ---
             function showMessage(message, type = 'success') {
+                // Using Bootstrap alert styles
                 messageArea.innerHTML = `<div class="alert alert-${type}" role="alert">${escapeHtml(message)}</div>`;
-                 // Optional: Clear message after a few seconds
+                // Clear message after 3 seconds
                 setTimeout(() => {
                    if(messageArea) messageArea.innerHTML = '';
                 }, 3000);
             }
 
-             // --- Simple HTML escaping helper ---
+             // --- Simple HTML escaping helper (to prevent basic issues) ---
              function escapeHtml(unsafe) {
                if (typeof unsafe !== 'string') {
                    if (unsafe === null || unsafe === undefined) return '';
@@ -84,66 +90,73 @@
                    .replace(/'/g, "'");
              }
 
+            // --- Handle form submission ---
             form.addEventListener('submit', function(event) {
-                event.preventDefault(); // Stop page reload
+                event.preventDefault(); // Prevent the default form submission which reloads the page
 
-                // --- Get data from form ---
+                // --- Get data from form inputs ---
                 const newProfile = {
                     imageUrl: document.getElementById('image-url').value.trim(),
                     idLevel: document.getElementById('id-level').value.trim(),
                     groupLevel: document.getElementById('group-level').value.trim(),
                     price: parseFloat(document.getElementById('price').value),
-                    // Add a unique ID based on timestamp for simplicity
+                    // Create a simple unique ID using the current time
                     id: 'profile_' + Date.now()
                 };
 
                 // --- Basic Validation ---
                 if (!newProfile.imageUrl || !newProfile.idLevel || !newProfile.groupLevel || isNaN(newProfile.price) || newProfile.price < 0) {
                     showMessage("Please fill in all fields correctly.", 'danger');
-                    return;
+                    return; // Stop processing if validation fails
                 }
-                 try { // Basic URL check
+                 try { // Basic check if image URL looks like a URL
                      new URL(newProfile.imageUrl);
                  } catch (_) {
-                     showMessage("Invalid Image URL format.", "warning");
+                     showMessage("The Image URL doesn't look like a valid web address.", "warning");
                      return;
                  }
 
                 // --- Load existing profiles from localStorage ---
                 let profiles = [];
+                // Get the currently saved list (if any)
                 const storedProfiles = localStorage.getItem('digitalIdProfiles');
                 if (storedProfiles) {
                     try {
+                        // Convert the stored string back into a JavaScript array
                         profiles = JSON.parse(storedProfiles);
-                        // Ensure it's an array
+                        // Safety check: make sure it's actually an array
                         if (!Array.isArray(profiles)) {
-                            console.warn("Stored data was not an array, resetting.");
+                            console.warn("Stored data wasn't an array, resetting.");
                             profiles = [];
                         }
                     } catch (e) {
+                        // If data is corrupted/unreadable, start with an empty list
                         console.error("Error parsing stored profiles:", e);
-                        showMessage("Could not load existing data. Starting fresh.", "warning");
-                        profiles = []; // Start fresh if stored data is corrupted
+                        showMessage("Could not read existing data. Starting fresh.", "warning");
+                        profiles = [];
                     }
                 }
 
-                // --- Add new profile ---
+                // --- Add the new profile to the list ---
                 profiles.push(newProfile);
 
-                // --- Save updated list back to localStorage ---
+                // --- Save the updated list back to localStorage ---
                 try {
+                    // Convert the JavaScript array back into a string to save it
                     localStorage.setItem('digitalIdProfiles', JSON.stringify(profiles));
+                    // Show success message and clear the form
                     showMessage(`Profile added successfully! (Level: ${escapeHtml(newProfile.idLevel)})`, 'success');
-                    form.reset(); // Clear the form
-                    document.getElementById('image-url').focus(); // Focus first field again
+                    form.reset(); // Clear the input fields
+                    document.getElementById('image-url').focus(); // Put cursor back in first field
                 } catch (e) {
+                     // Handle potential errors like storage being full
                      console.error("Error saving data to localStorage:", e);
-                     showMessage("Could not save data. Local storage might be full or disabled.", "danger");
+                     showMessage("Could not save data. Browser storage might be full or disabled.", "danger");
                 }
             });
         });
     </script>
-     <!-- Bootstrap JS -->
+     <!-- Bootstrap JavaScript Bundle (needed for some components like alerts) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

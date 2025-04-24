@@ -3,81 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Profile</title>
+    <title>View Profiles</title>
     <!-- Using Bootstrap for quick styling -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
+     <style>
         /* Optional: Basic styling */
-        body { padding: 20px; background-color: #f8f9fa; }
-        .container { max-width: 600px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-top: 20px; }
+        body { padding-bottom: 80px; background-color: #f8f9fa; }
+        .profile-card { margin-bottom: 1.5rem; background-color: white; border-radius: 0.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; }
+        .profile-card img { max-height: 200px; object-fit: cover; width: 100%; display: block; border-bottom: 1px solid #eee;}
+        .profile-card .card-body { padding: 1rem; flex-grow: 1;} /* Make card bodies take up space */
+        .placeholder-message { text-align: center; padding: 30px; font-style: italic; color: #6c757d; }
         footer { margin-top: 30px; text-align: center; color: #6c757d; }
+        .card-actions { text-align: right; padding: 0.5rem 1rem; border-top: 1px solid #eee; background-color: #f8f9fa; margin-top: auto;} /* Push actions to bottom */
     </style>
 </head>
 <body>
 
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">Saved Profiles</a>
+             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavView" aria-controls="navbarNavView" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavView">
+                <ul class="navbar-nav ms-auto">
+                   <li class="nav-item">
+                       <!-- Link back to the adding page -->
+                       <a class="nav-link" href="index.html">Add New Profile</a>
+                   </li>
+                   <li class="nav-item">
+                       <!-- Button to clear all data -->
+                       <button id="clear-all-btn" class="btn btn-danger btn-sm ms-2 mt-1 mt-lg-0">Clear All Profiles</button>
+                   </li>
+               </ul>
+           </div>
+        </div>
+    </nav>
+
+    <!-- Main content area -->
     <div class="container">
-        <h1 class="mb-4 text-center">Add New ID Profile</h1>
-        <!-- Area for showing success/error messages -->
-        <div id="message-area" class="mb-3"></div>
-
-        <!-- The form for adding profiles -->
-        <form id="add-profile-form">
-            <div class="mb-3">
-                <label for="image-url" class="form-label">Image URL</label>
-                <input type="url" class="form-control" id="image-url" placeholder="https://example.com/image.jpg" required>
-                <small class="form-text text-muted">Paste the full web address (URL) of an image.</small>
-            </div>
-
-            <div class="row mb-3">
-               <div class="col-md-6">
-                    <label for="id-level" class="form-label">ID Level</label>
-                    <input type="text" class="form-control" id="id-level" placeholder="e.g., Level 5" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="group-level" class="form-label">Group Level</label>
-                    <input type="text" class="form-control" id="group-level" placeholder="e.g., Alpha" required>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="price" class="form-label">Price</label>
-                <div class="input-group">
-                    <span class="input-group-text">$</span>
-                    <input type="number" step="0.01" min="0" class="form-control" id="price" placeholder="e.g., 99.50" required>
-                </div>
-            </div>
-
-            <!-- Buttons -->
-            <div class="d-grid gap-2">
-                 <button type="submit" class="btn btn-primary">Add Profile to List</button>
-                 <!-- Link to the viewing page -->
-                 <a href="profiles.html" class="btn btn-secondary">View Saved Profiles</a>
-            </div>
-        </form>
+        <h1 class="mb-4 text-center">Saved ID Profiles</h1>
+         <!-- Area for showing messages (like "deleted" or "cleared") -->
+        <div id="message-area-view" class="mb-3"></div>
+         <!-- Container where profile cards will be displayed -->
+        <div id="profile-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+            <!-- Placeholder message shown while loading or if empty -->
+            <div class="col-12 placeholder-message" id="loading-placeholder">Loading profiles...</div>
+            <!-- Profile cards are added here by JavaScript -->
+        </div>
     </div>
 
-    <footer class="container">
-        <p>© 2023 Simple Profile Manager (localStorage)</p>
+    <!-- Footer -->
+     <footer class="mt-5 py-3 text-center fixed-bottom bg-light">
+        <p class="mb-0">© 2023 Simple Profile Manager (localStorage)</p>
     </footer>
 
-    <!-- JavaScript for handling the form -->
+    <!-- JavaScript for loading and displaying profiles -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('add-profile-form');
-            const messageArea = document.getElementById('message-area');
+            const profileListContainer = document.getElementById('profile-list');
+            const loadingPlaceholder = document.getElementById('loading-placeholder');
+            const messageAreaView = document.getElementById('message-area-view');
+            const clearAllBtn = document.getElementById('clear-all-btn');
 
-            // --- Function to show messages ---
-            function showMessage(message, type = 'success') {
-                // Using Bootstrap alert styles
-                messageArea.innerHTML = `<div class="alert alert-${type}" role="alert">${escapeHtml(message)}</div>`;
-                // Clear message after 3 seconds
-                setTimeout(() => {
-                   if(messageArea) messageArea.innerHTML = '';
-                }, 3000);
+            // --- Function to show messages on this page ---
+            function showViewMessage(message, type = 'info') {
+                 if (!messageAreaView) return;
+                 messageAreaView.innerHTML = `<div class="alert alert-${type}" role="alert">${escapeHtml(message)}</div>`;
+                  // Auto-clear message after 4 seconds
+                  setTimeout(() => {
+                     if (messageAreaView) messageAreaView.innerHTML = '';
+                 }, 4000);
             }
 
-             // --- Simple HTML escaping helper (to prevent basic issues) ---
-             function escapeHtml(unsafe) {
+            // --- Simple HTML escaping helper ---
+            function escapeHtml(unsafe) {
                if (typeof unsafe !== 'string') {
                    if (unsafe === null || unsafe === undefined) return '';
                     unsafe = String(unsafe);
@@ -88,75 +89,147 @@
                    .replace(/>/g, ">")
                    .replace(/"/g, """)
                    .replace(/'/g, "'");
-             }
+           }
 
-            // --- Handle form submission ---
-            form.addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent the default form submission which reloads the page
 
-                // --- Get data from form inputs ---
-                const newProfile = {
-                    imageUrl: document.getElementById('image-url').value.trim(),
-                    idLevel: document.getElementById('id-level').value.trim(),
-                    groupLevel: document.getElementById('group-level').value.trim(),
-                    price: parseFloat(document.getElementById('price').value),
-                    // Create a simple unique ID using the current time
-                    id: 'profile_' + Date.now()
-                };
+            // --- Function to load data from localStorage and display it ---
+            function loadAndDisplayProfiles() {
+                profileListContainer.innerHTML = ''; // Clear out old cards or loading message
+                if (loadingPlaceholder) loadingPlaceholder.style.display = 'block'; // Show loading text
 
-                // --- Basic Validation ---
-                if (!newProfile.imageUrl || !newProfile.idLevel || !newProfile.groupLevel || isNaN(newProfile.price) || newProfile.price < 0) {
-                    showMessage("Please fill in all fields correctly.", 'danger');
-                    return; // Stop processing if validation fails
-                }
-                 try { // Basic check if image URL looks like a URL
-                     new URL(newProfile.imageUrl);
-                 } catch (_) {
-                     showMessage("The Image URL doesn't look like a valid web address.", "warning");
-                     return;
-                 }
-
-                // --- Load existing profiles from localStorage ---
                 let profiles = [];
-                // Get the currently saved list (if any)
+                // Get the saved data string
                 const storedProfiles = localStorage.getItem('digitalIdProfiles');
+
+                // If data exists, try to parse it back into an array
                 if (storedProfiles) {
                     try {
-                        // Convert the stored string back into a JavaScript array
                         profiles = JSON.parse(storedProfiles);
-                        // Safety check: make sure it's actually an array
-                        if (!Array.isArray(profiles)) {
-                            console.warn("Stored data wasn't an array, resetting.");
-                            profiles = [];
-                        }
+                         // Safety check: ensure it's an array
+                         if (!Array.isArray(profiles)) {
+                             console.warn("Stored data was not an array, clearing.");
+                             profiles = [];
+                             localStorage.removeItem('digitalIdProfiles'); // Delete bad data
+                             showViewMessage("Stored data was invalid, it has been cleared.", "warning");
+                         }
                     } catch (e) {
-                        // If data is corrupted/unreadable, start with an empty list
+                        // Handle corrupted data
                         console.error("Error parsing stored profiles:", e);
-                        showMessage("Could not read existing data. Starting fresh.", "warning");
-                        profiles = [];
+                        showViewMessage("Could not read stored data. It might be corrupted.", "danger");
+                         profiles = [];
                     }
                 }
 
-                // --- Add the new profile to the list ---
-                profiles.push(newProfile);
+                // Hide the "Loading..." message now
+                if (loadingPlaceholder) loadingPlaceholder.style.display = 'none';
 
-                // --- Save the updated list back to localStorage ---
-                try {
-                    // Convert the JavaScript array back into a string to save it
-                    localStorage.setItem('digitalIdProfiles', JSON.stringify(profiles));
-                    // Show success message and clear the form
-                    showMessage(`Profile added successfully! (Level: ${escapeHtml(newProfile.idLevel)})`, 'success');
-                    form.reset(); // Clear the input fields
-                    document.getElementById('image-url').focus(); // Put cursor back in first field
-                } catch (e) {
-                     // Handle potential errors like storage being full
-                     console.error("Error saving data to localStorage:", e);
-                     showMessage("Could not save data. Browser storage might be full or disabled.", "danger");
+                // If no profiles are loaded (either none saved or data was bad)
+                if (profiles.length === 0) {
+                    profileListContainer.innerHTML = '<div class="col-12 placeholder-message">No profiles have been saved yet. Go to the "Add New Profile" page to create some.</div>';
+                    return; // Nothing more to display
+                }
+
+                // Display profiles (Optional: show newest first)
+                // profiles.reverse();
+
+                // Loop through each profile and create an HTML card for it
+                profiles.forEach(function(profile) {
+                    // Safety check for profile ID (used for deletion)
+                    if (!profile.id) {
+                         profile.id = 'legacy_' + Math.random(); // Assign temporary ID if missing
+                    }
+
+                    // Use a default image if the URL is missing or invalid
+                    let imageUrl = profile.imageUrl || 'https://via.placeholder.com/300x200/EEEEEE/AAAAAA?text=No+Image';
+                     if (typeof imageUrl !== 'string' || !imageUrl.startsWith('http')) {
+                         imageUrl = 'https://via.placeholder.com/300x200/EEEEEE/AAAAAA?text=Bad+URL';
+                     }
+
+                    // Create the HTML for one profile card using Bootstrap classes
+                    const cardHtml = `
+                        <div class="col">
+                            <div class="card profile-card h-100">
+                                <img src="${escapeHtml(imageUrl)}" class="card-img-top" alt="Profile Image for ${escapeHtml(profile.idLevel || '')}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200/EEEEEE/AAAAAA?text=Image+Load+Error';">
+                                <div class="card-body">
+                                    <h5 class="card-title">ID Level: ${escapeHtml(profile.idLevel || 'N/A')}</h5>
+                                    <p class="card-text mb-1">Group Level: ${escapeHtml(profile.groupLevel || 'N/A')}</p>
+                                    <p class="card-text"><strong>Price:</strong> $${Number(profile.price || 0).toFixed(2)}</p>
+                                </div>
+                                <!-- Section at the bottom of the card for buttons -->
+                                <div class="card-actions">
+                                     <!-- Delete button with the profile's unique ID -->
+                                     <button class="btn btn-sm btn-outline-danger btn-delete" data-profile-id="${escapeHtml(profile.id)}">Delete</button>
+                                </div>
+                            </div>
+                        </div>`;
+                    // Add the newly created card HTML to the display area
+                    profileListContainer.insertAdjacentHTML('beforeend', cardHtml);
+                });
+            }
+
+             // --- Function to delete a specific profile by its ID ---
+            function deleteProfile(profileIdToDelete) {
+                 let profiles = [];
+                 const storedProfiles = localStorage.getItem('digitalIdProfiles');
+                 if (storedProfiles) {
+                     try {
+                         profiles = JSON.parse(storedProfiles);
+                         if (!Array.isArray(profiles)) profiles = [];
+                     } catch (e) { profiles = []; } // Don't try to delete from corrupted data
+                 }
+
+                 // Create a new array containing only the profiles that DO NOT match the ID to delete
+                 const updatedProfiles = profiles.filter(profile => profile.id !== profileIdToDelete);
+
+                 // Save the new (filtered) list back to localStorage
+                 try {
+                     localStorage.setItem('digitalIdProfiles', JSON.stringify(updatedProfiles));
+                     showViewMessage('Profile deleted.', 'success');
+                     loadAndDisplayProfiles(); // Reload the display to show the change
+                 } catch (e) {
+                     console.error("Error saving data after deletion:", e);
+                     showViewMessage("Could not save changes after deletion.", "danger");
+                 }
+            }
+
+            // --- Handle clicks within the profile list container ---
+            // This uses "event delegation" - we listen on the parent container,
+            // but check if the click happened specifically on a delete button.
+            profileListContainer.addEventListener('click', function(event) {
+                // Check if the clicked element has the 'btn-delete' class
+                if (event.target.classList.contains('btn-delete')) {
+                    // Get the unique ID stored in the button's 'data-profile-id' attribute
+                    const profileId = event.target.getAttribute('data-profile-id');
+                    // Ask for confirmation before deleting
+                    if (profileId && confirm(`Are you sure you want to delete this profile?`)) {
+                         deleteProfile(profileId); // Call the delete function
+                    }
                 }
             });
+
+
+            // --- Handle click on the "Clear All Profiles" button ---
+            clearAllBtn.addEventListener('click', function() {
+                // Ask for confirmation
+                if (confirm('DELETE ALL PROFILES?\n\nThis action cannot be undone and will remove all saved profile data from this browser.')) {
+                    try {
+                        // Remove the item from localStorage completely
+                        localStorage.removeItem('digitalIdProfiles');
+                        showViewMessage('All profiles have been deleted.', 'success');
+                        loadAndDisplayProfiles(); // Refresh the display (will show empty message)
+                    } catch (e) {
+                         console.error("Error clearing localStorage:", e);
+                         showViewMessage("Could not clear all profiles.", "danger");
+                    }
+                }
+            });
+
+            // --- Load profiles when the page first opens ---
+            loadAndDisplayProfiles();
+
         });
     </script>
-     <!-- Bootstrap JavaScript Bundle (needed for some components like alerts) -->
+     <!-- Bootstrap JavaScript Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

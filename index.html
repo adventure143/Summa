@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Official KS Admin Verification & FAKE Admin Warning</title>
+    <title>Original KS Admin Verification & Impersonator Warning</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> {/* Changed Font */}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* --- Neumorphic Theme Configuration --- */
         :root {
-            --bg-color: #e0e5ec; /* Base background - Off-white/light grey is key */
-            --text-primary: #3a4a5e; /* Darker grey-blue for text */
+            --bg-color: #e0e5ec;
+            --text-primary: #3a4a5e;
             --text-secondary: #7a8aa0;
-            --primary-accent: #4a76f0; /* A brighter blue for key actions */
-            --verified-color: #28a745; /* Keep green for verified */
-            --warning-color: #dc3545; /* Keep red for warning */
-            --warning-bg-soft: #f7d7d7; /* Softer red background */
-            --shadow-light: -8px -8px 16px rgba(255, 255, 255, 0.7); /* Light highlight shadow */
-            --shadow-dark: 8px 8px 16px rgba(163, 177, 198, 0.6); /* Darker main shadow */
+            --primary-accent: #4a76f0;
+            --verified-color: #28a745;
+            --warning-color: #dc3545;
+            --warning-bg-soft: #f7d7d7;
+            --shadow-light: -8px -8px 16px rgba(255, 255, 255, 0.7);
+            --shadow-dark: 8px 8px 16px rgba(163, 177, 198, 0.6);
             --shadow-light-inset: inset -6px -6px 12px rgba(255, 255, 255, 0.7);
             --shadow-dark-inset: inset 6px 6px 12px rgba(163, 177, 198, 0.6);
             --border-radius: 12px;
@@ -30,6 +30,8 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            /* Disable tap highlight on mobile */
+            -webkit-tap-highlight-color: transparent;
         }
 
         html {
@@ -50,10 +52,10 @@
 
         /* --- Main Container --- */
         .container {
-            background-color: var(--bg-color); /* Same as body for seamless look */
+            background-color: var(--bg-color);
             padding: 35px 40px;
-            border-radius: 20px; /* Softer corners */
-            box-shadow: var(--shadow-light), var(--shadow-dark); /* Outset shadow for the card */
+            border-radius: 20px;
+            box-shadow: var(--shadow-light), var(--shadow-dark);
             max-width: 750px;
             width: 100%;
             text-align: center;
@@ -78,10 +80,21 @@
 
         h2 {
             font-size: 1.4rem;
-            margin-bottom: 20px;
-            display: flex;
+            margin-bottom: 10px;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
+            position: relative;
+        }
+        .verified-section h2 {
+             color: var(--verified-color);
+             border-bottom: 1px solid rgba(163, 177, 198, 0.3);
+             padding-bottom: 15px;
+             margin-bottom: 10px;
+             gap: 0;
+             width: auto;
+             padding-left: 40px;
         }
 
         p {
@@ -94,12 +107,19 @@
             color: var(--text-primary);
             margin-bottom: 30px;
         }
+        p.original-admin-statement {
+             font-size: 1rem;
+             color: var(--text-primary);
+             font-weight: 500;
+             margin-top: 0;
+             margin-bottom: 20px;
+        }
         p.verification-instruction {
             font-size: 1rem;
             color: var(--text-primary);
-            background-color: var(--bg-color); /* Match background */
-            border: none; /* Remove border */
-            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Indented look */
+            background-color: var(--bg-color);
+            border: none;
+            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
             padding: 18px 20px;
             margin-bottom: 30px;
             border-radius: var(--border-radius);
@@ -119,8 +139,53 @@
             flex-shrink: 0;
         }
         .icon-lg { width: 1.4em; height: 1.4em; }
-        .icon svg { /* Style embedded SVGs if needed */
-            fill: currentColor; /* Match surrounding text color */
+        .icon svg {
+            fill: currentColor;
+        }
+
+        /* --- Animated Checkmark --- */
+        .animated-tick-container {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+        }
+        .checkmark {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 3;
+            stroke: var(--verified-color);
+            stroke-miterlimit: 10;
+            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
+            margin: 0 auto;
+            animation: scale .3s ease-in-out .9s both;
+        }
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 3;
+            stroke-miterlimit: 10;
+            stroke: var(--verified-color);
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            stroke-width: 3.5;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+        @keyframes stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+        @keyframes scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale3d(1.1, 1.1, 1); }
         }
 
         /* --- Neumorphic Button Base Style --- */
@@ -137,17 +202,17 @@
             transition: box-shadow 0.2s ease, color 0.2s ease;
             display: inline-flex;
             align-items: center;
-            justify-content: center; /* Center content */
+            justify-content: center;
             gap: 8px;
-            box-shadow: var(--shadow-light), var(--shadow-dark); /* Extruded look */
+            box-shadow: var(--shadow-light), var(--shadow-dark);
             text-align: center;
             white-space: nowrap;
         }
         .neumorphic-button:hover {
-            color: var(--primary-accent); /* Highlight on hover */
+            color: var(--primary-accent);
         }
         .neumorphic-button:active {
-            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Pressed look */
+            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
             color: var(--primary-accent);
         }
         .neumorphic-button img, .neumorphic-button svg {
@@ -156,34 +221,69 @@
             vertical-align: middle;
         }
 
-        /* Apply neumorphic style to specific buttons */
-        #translate-button {
-            /* Inherits .neumorphic-button styles if class added, or style directly */
-            /* Example applying directly: */
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            border: none;
-            padding: 12px 22px;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-family: var(--font-family);
-            font-weight: 500;
-            transition: box-shadow 0.2s ease, color 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: var(--shadow-light), var(--shadow-dark);
+        /* --- Translate Button & Widget (Restored) --- */
+        .translate-container {
+            margin-bottom: 30px;
+            text-align: center;
         }
-        #translate-button:hover { color: var(--primary-accent); }
-        #translate-button:active { box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); color: var(--primary-accent); }
+        #translate-button { /* Button style */
+             /* Uses .neumorphic-button base */
+        }
+        #translate-button img { /* Icon within button */
+             width: 20px;
+             height: 20px;
+        }
+        #google_translate_element { /* Dropdown container */
+            margin-top: 15px;
+            display: none; /* Hide initially */
+            text-align: center;
+             background: var(--bg-color);
+             padding: 5px;
+             border-radius: var(--border-radius);
+             box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Indented container */
+             display: none; /* Initially hidden */
+        }
+        #google_translate_element.show { /* Class to show dropdown */
+            display: inline-block;
+            max-width: 90%; /* Prevent excessive width */
+        }
+         /* Style Google's select dropdown */
+        #google_translate_element select.goog-te-combo {
+             background-color: var(--bg-color);
+             border: none;
+             padding: 8px 12px;
+             border-radius: 8px;
+             font-family: var(--font-family);
+             color: var(--text-primary);
+             box-shadow: var(--shadow-light), var(--shadow-dark); /* Extruded select */
+             cursor: pointer;
+             margin: 0;
+             appearance: none;
+             -webkit-appearance: none;
+             -moz-appearance: none;
+             outline: none;
+             min-width: 150px;
+        }
+         /* Hide Google's "Powered by" link */
+         #google_translate_element a {
+             display: none !important;
+         }
 
-        .action-button { /* Copy, Open, Join */
-             /* Base style similar to translate button */
+        /* Prevent Google's top frame */
+        .goog-te-banner-frame.skiptranslate { display: none !important; }
+        body.goog-te-banner-body {
+             padding-top: 0px !important;
+             top: 0px !important;
+             position: static !important;
+        }
+        iframe.goog-te-banner-frame { display: none !important; }
+
+        /* --- Action Buttons (Copy, Open, Join) --- */
+        .action-button {
             background-color: var(--bg-color);
             color: var(--text-primary);
             border: none;
-            padding: 10px 18px; /* Slightly smaller */
+            padding: 10px 18px;
             border-radius: var(--border-radius);
             cursor: pointer;
             font-size: 0.9rem;
@@ -200,42 +300,18 @@
         .action-button svg { width: 14px; height: 14px; }
 
         .action-button.copied {
-            color: var(--verified-color); /* Green text when copied */
-            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Keep pressed look briefly */
+            color: var(--verified-color);
+            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
         }
         .action-button.copied:hover {
-             color: var(--verified-color); /* Maintain green on hover when copied */
+             color: var(--verified-color);
         }
-
-
-        /* --- Translate Widget --- */
-        .translate-container {
-            margin-bottom: 30px; /* More space */
-            text-align: center;
-        }
-        #google_translate_element {
-            margin-top: 15px;
-            display: none; /* Hide initially */
-            text-align: center;
-            /* Basic styling for the dropdown itself */
-             background: var(--bg-color);
-             padding: 5px;
-             border-radius: var(--border-radius);
-             box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Indented container */
-        }
-        #google_translate_element.show {
-            display: inline-block; /* Display centered */
-        }
-
-        /* Prevent Google's top frame */
-        .goog-te-banner-frame.skiptranslate { display: none !important; }
-        body { top: 0px !important; }
 
         /* --- Warning Section --- */
         .warning-section {
-            background-color: var(--warning-bg-soft); /* Softer warning bg */
-            border: none; /* Remove border */
-            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Indented look */
+            background-color: var(--warning-bg-soft);
+            border: none;
+            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
             padding: 25px;
             margin: 35px 0;
             border-radius: var(--border-radius);
@@ -245,15 +321,20 @@
             color: var(--warning-color);
             justify-content: flex-start;
             margin-bottom: 15px;
+            border-bottom: none;
+            padding-bottom: 0;
+            padding-left: 0;
+            display: flex;
+            width: 100%;
         }
         .warning-section p, .warning-section li {
-            color: #b72c3a; /* Darker red text for contrast */
+            color: #b72c3a;
             margin-bottom: 10px;
             font-size: 0.95rem;
         }
         .warning-section ul {
-            list-style-position: outside; /* Standard bullet position */
-            padding-left: 20px; /* Indent list */
+            list-style-position: outside;
+            padding-left: 20px;
             margin-top: 10px;
             margin-bottom: 15px;
         }
@@ -268,33 +349,42 @@
         .verified-section {
             margin-top: 35px;
             padding: 30px;
-            background-color: var(--bg-color); /* Match background */
-            border: none; /* Remove border */
-            box-shadow: var(--shadow-light), var(--shadow-dark); /* Extruded section */
+            background-color: var(--bg-color);
+            border: none;
+            box-shadow: var(--shadow-light), var(--shadow-dark);
             border-radius: var(--border-radius);
-            text-align: left;
+            text-align: center; /* Center align block content */
         }
-        .verified-section h2 {
-            color: var(--verified-color); /* Green heading */
-            justify-content: flex-start;
-            border-bottom: 1px solid rgba(163, 177, 198, 0.3); /* Subtle separator */
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+        .verified-section .verification-instruction {
+             display: inline-block;
+             max-width: 90%;
+             text-align: left;
+             margin-left: auto;
+             margin-right: auto;
+             margin-bottom: 25px;
         }
+
 
         /* --- Contact List --- */
         .contact-list {
             list-style: none;
             padding: 0;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center list items */
         }
         .contact-item {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            padding: 18px 0;
-            border-bottom: 1px solid rgba(163, 177, 198, 0.3); /* Subtle separator */
+            padding: 25px 0;
+            border-bottom: 1px solid rgba(163, 177, 198, 0.3);
             gap: 15px;
-            flex-wrap: wrap;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .contact-item:last-child { border-bottom: none; padding-bottom: 0; }
         .contact-item:first-child { padding-top: 0; }
@@ -302,52 +392,63 @@
         .contact-icon {
              background: var(--bg-color);
              border-radius: 50%;
-             padding: 10px; /* Slightly more padding */
-             width: 44px; /* Slightly larger */
+             padding: 10px;
+             width: 44px;
              height: 44px;
              display: flex;
              justify-content: center;
              align-items: center;
              flex-shrink: 0;
-             box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Indented icon circle */
+             box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
+             margin-bottom: 5px;
         }
         .contact-icon svg {
             width: 20px;
             height: 20px;
-            fill: var(--primary-accent); /* Color the icon */
+            fill: var(--primary-accent);
         }
 
         .contact-content {
             flex-grow: 1;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
+            width: 100%;
         }
 
         .contact-text {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            text-align: left; /* Ensure left align */
+            align-items: flex-start; /* Align labels/values left */
+            text-align: left; /* Keep text left-aligned */
+            width: 100%;
+            max-width: 280px; /* Control width of text block */
         }
 
         .contact-label {
-            font-size: 0.8rem; /* Smaller label */
+            font-size: 0.8rem;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 3px;
+            width: 100%;
         }
 
         .contact-value {
-            font-weight: 500; /* Slightly lighter value */
+            font-weight: 500;
             color: var(--text-primary);
             font-size: 1rem;
             word-break: break-all;
+            width: 100%;
         }
         .contact-value a { font-weight: 500; }
+
+        .contact-item .action-button {
+            width: auto;
+            min-width: 150px;
+            justify-content: center;
+        }
 
         /* --- Footer --- */
         .footer-note {
@@ -362,22 +463,8 @@
             .container { padding: 30px; }
             h1 { font-size: 1.8rem; }
             h2 { font-size: 1.3rem; }
-            .contact-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px; /* Increased gap when stacked */
-             }
-            .contact-content {
-                flex-direction: column;
-                align-items: flex-start;
-                width: 100%;
-                gap: 12px; /* Gap between text and button when stacked */
-             }
-            .action-button {
-                /* Don't necessarily need full width here, let's see */
-                 align-self: flex-start; /* Align button left */
-                 margin-top: 5px;
-            }
+            .verified-section h2 { padding-left: 35px; }
+            .animated-tick-container { width: 25px; height: 25px; }
         }
         @media (max-width: 480px) { /* Smaller mobile phones */
              h1 { font-size: 1.6rem; gap: 8px; }
@@ -386,23 +473,33 @@
              .contact-icon { width: 40px; height: 40px; padding: 8px;}
              .contact-icon svg { width: 18px; height: 18px;}
              .contact-value { font-size: 0.95rem; }
-             /* Make buttons easily tappable, maybe not full width always */
-             #translate-button {
-                 width: auto; /* Allow natural width */
-                 padding: 10px 18px;
+             /* Make all buttons full width */
+             #translate-button, .action-button {
+                  width: 100%;
+                  max-width: 300px;
+                  margin-left: auto;
+                  margin-right: auto;
+                  justify-content: center;
              }
-             .action-button {
-                  width: auto; /* Allow natural width */
-                  padding: 8px 15px;
-             }
-             .contact-content .action-button {
-                 width: 100%; /* Make copy/open/join full width when stacked */
-                 justify-content: center;
+             .contact-item .action-button {
+                 width: 100%;
+                 max-width: 300px;
+                 margin-left: auto;
+                 margin-right: auto;
              }
              #google_translate_element.show {
-                 width: 100%; /* Full width dropdown container */
+                 width: 100%;
+                 max-width: 300px;
+                 margin-left: auto;
+                 margin-right: auto;
+                 display: block; /* Ensure it takes width */
              }
-
+             .verified-section h2 { font-size: 1.2rem; padding-left: 30px; }
+             .animated-tick-container { width: 20px; height: 20px; }
+             p.verification-instruction { padding: 15px; font-size: 0.95rem; }
+             .verified-section .original-admin-statement { font-size: 0.95rem; }
+             .contact-text { max-width: 100%; align-items: center; text-align: center;} /* Center text on small screens */
+             .contact-label { text-align: center; }
         }
     </style>
 </head>
@@ -412,17 +509,17 @@
 
         <!-- Translate Button and Dropdown Container -->
         <div class="translate-container">
-            <button id="translate-button" class="neumorphic-button"> {/* Added class */}
+            <button id="translate-button" class="neumorphic-button">
                 <img src="https://i.postimg.cc/8P8tymg8/Google-Translate-Small.png" alt="Google Translate Icon">
                 Translate
             </button>
-            <!-- DIV for Google Translate Widget -->
+            <!-- DIV for Google Translate Widget (Initially Hidden) -->
             <div id="google_translate_element"></div>
         </div>
 
         <h1>
             <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.07 14.07l-3.5-3.5a.996.996 0 1 1 1.41-1.41L10.93 14.24l5.5-5.5a.996.996 0 1 1 1.41 1.41l-6.91 6.91c-.38.38-.99.38-1.38-.04z"></path></svg>
-            KS Admin Verification
+            KS Admin Official Verification
         </h1>
         <p class="lead">Official contacts & critical warning about impersonators.</p>
 
@@ -430,7 +527,7 @@
         <section class="warning-section">
             <h2>
                 <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2V9h2v5z"></path></svg>
-                Beware: FAKE KS Admin Alert!
+                CRITICAL WARNING: Impersonator Scam Active!
             </h2>
             <p>A <strong>FAKE KS Admin</strong> is actively scamming users. This impersonator aims to <strong>steal funds & data</strong>.</p>
             <p>The FAKE admin often:</p>
@@ -448,11 +545,17 @@
         <!-- ====== OFFICIAL ADMIN INFO SECTION ====== -->
         <section class="verified-section">
             <h2>
-                <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.95 7.53l-7.17 7.17a.996.996 0 0 1-1.41 0l-3.83-3.83a.996.996 0 1 1 1.41-1.41L10.94 15.1l6.07-6.07c.39-.39 1.02-.39 1.41 0 .4.39.4 1.03.03 1.41z"></path></svg>
+                <div class="animated-tick-container">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                </div>
                 Verified KS Admin Contacts
             </h2>
-
-            <!-- Instruction about verification method -->
+            <p class="original-admin-statement">
+                This section lists the <strong>ONLY Original KS Admin</strong> contact details.
+            </p>
             <p class="verification-instruction">
                 <strong>Important:</strong> Verify the KS Admin's identity <strong>ONLY</strong> using these official methods. <strong>Confirm details *before* contacting</strong>. Do not use profile pictures for verification.
             </p>
@@ -522,7 +625,7 @@
     <script>
         function copyToClipboard(elementId, buttonElement) {
             const textToCopy = document.getElementById(elementId).innerText;
-            const originalButtonContent = buttonElement.innerHTML; // Store original HTML
+            const originalButtonContent = buttonElement.innerHTML;
 
             navigator.clipboard.writeText(textToCopy).then(() => {
                 buttonElement.innerHTML = `
@@ -549,41 +652,62 @@
             });
         }
 
-        // Translate Button Toggle Logic
+        // Translate Button Toggle Logic (Restored)
         document.addEventListener('DOMContentLoaded', function() {
             const translateButton = document.getElementById('translate-button');
             const translateElement = document.getElementById('google_translate_element');
 
             if (translateButton && translateElement) {
+                let isTranslateInitialized = false; // Flag to track initialization
+
                 translateButton.addEventListener('click', function() {
-                    // Ensure the widget is initialized before trying to show it
-                    if (typeof google !== 'undefined' && google.translate && google.translate.TranslateElement) {
+                    // Initialize only ONCE on the first click if not already done
+                    if (!isTranslateInitialized && typeof google !== 'undefined' && google.translate && google.translate.TranslateElement) {
                         if (!translateElement.querySelector(".skiptranslate")) {
-                             googleTranslateElementInit(); // Re-initialize if needed
+                            try {
+                                googleTranslateElementInit();
+                                isTranslateInitialized = true; // Set flag after successful init
+                            } catch (error) {
+                                console.error("Error initializing Google Translate on click: ", error);
+                                // Optionally provide feedback to the user here
+                            }
+                        } else {
+                           isTranslateInitialized = true; // Already initialized by Google somehow
                         }
+                    } else if (typeof google === 'undefined') {
+                         console.error("Google Translate library not loaded yet.");
                     }
-                    translateElement.classList.toggle('show');
+
+                    // Toggle visibility only AFTER trying to initialize (if needed)
+                    if (isTranslateInitialized || translateElement.querySelector(".skiptranslate") ) {
+                         translateElement.classList.toggle('show');
+                    } else {
+                         // Handle case where init failed or library wasn't ready
+                         console.warn("Cannot show Translate widget - initialization might have failed or library not ready.");
+                    }
                 });
             } else {
-                console.error("Translate button or element not found.");
+                console.error("Translate button or element container not found.");
             }
         });
     </script>
 
     <!-- Google Translate Widget Initialization -->
     <script type="text/javascript">
+        // This function is called by the Google script or manually on first click
         function googleTranslateElementInit() {
-          if (!document.querySelector("#google_translate_element > .skiptranslate")) {
+            if (!document.querySelector("#google_translate_element > .skiptranslate")) {
                 new google.translate.TranslateElement({
                     pageLanguage: 'en',
-                    includedLanguages: 'ta,en,te,ml,or,mr,bn,gu,kn,pa,hi',
+                    includedLanguages: 'ta,en,te,ml,or,mr,bn,gu,kn,pa,hi', // YOUR LANGUAGES
                     layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                     autoDisplay: false
                 }, 'google_translate_element');
-          }
+            }
         }
     </script>
+    <!-- Load Google script (async defer is good practice) -->
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
 
 </body>
-</html>
+    </html>

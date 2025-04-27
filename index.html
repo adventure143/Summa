@@ -514,12 +514,13 @@
     <!-- Google Translate Widget Scripts -->
     <script type="text/javascript">
         function googleTranslateElementInit() {
-          // Check if the element already exists to prevent duplicates if script runs multiple times
+          // Check if the element already exists to prevent duplicates
           if (!document.querySelector("#google_translate_element > .skiptranslate")) {
                 new google.translate.TranslateElement({
-                    pageLanguage: 'en', // Set the original language of your page
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE, // Keep it simple
-                    autoDisplay: false // Prevent the automatic banner
+                    pageLanguage: 'en', // Source language of the page
+                    includedLanguages: 'ta,en,te,ml,or,mr,bn,gu,kn,pa,hi', // SPECIFIED LANGUAGES HERE
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
                 }, 'google_translate_element');
           }
         }
@@ -533,13 +534,12 @@
                 translateButton.addEventListener('click', function() {
                     // Ensure the widget is initialized before trying to show it
                     if (typeof google !== 'undefined' && google.translate && google.translate.TranslateElement) {
-                        // If it's the first click and the widget hasn't been initialized fully sometimes, re-init just in case
                         if (!translateElement.querySelector(".skiptranslate")) {
-                             googleTranslateElementInit();
+                             googleTranslateElementInit(); // Re-initialize if needed
                         }
                     }
-                    // Toggle the visibility of the Google Translate dropdown
-                    translateElement.classList.toggle('show'); // Use toggle for simplicity
+                    // Toggle the visibility
+                    translateElement.classList.toggle('show');
                 });
             } else {
                 console.error("Translate button or element not found.");
@@ -547,7 +547,6 @@
         });
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
-    <!-- Added async defer to potentially improve loading performance -->
 
 </body>
 </html>

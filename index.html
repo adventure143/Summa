@@ -215,47 +215,58 @@
             box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
             color: var(--primary-accent);
         }
-        .neumorphic-button svg { /* Style SVG icons in buttons */
+        /* Style for image icon within button */
+        .neumorphic-button img {
+            width: 20px; /* Adjust if needed */
+            height: 20px;
+            vertical-align: middle;
+        }
+        /* Style for SVG icons within button */
+        .neumorphic-button svg {
             width: 18px;
             height: 18px;
-            fill: currentColor; /* Icon color matches text */
+            fill: currentColor;
             transition: fill 0.2s ease;
         }
         .neumorphic-button:hover svg {
-             fill: var(--primary-accent); /* Change icon color on hover */
+             fill: var(--primary-accent);
         }
+
 
         /* --- Translate Button & Widget --- */
         .translate-container {
             margin-bottom: 30px;
             text-align: center;
-            position: relative; /* Needed for positioning dropdown */
+            position: relative;
         }
         #translate-button {
-             /* Uses .neumorphic-button */
-             position: relative; /* To keep it above dropdown */
+             position: relative;
              z-index: 2;
+             margin-bottom: 15px;
         }
-        #google_translate_element { /* The container DIV for Google's widget */
+        #google_translate_element { /* Dropdown container */
             background: var(--bg-color);
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
-            padding: 15px; /* Add padding */
-            margin-top: -10px; /* Overlap slightly with button */
+            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Inset style */
+            padding: 15px;
+            margin-top: -10px;
             position: relative;
             z-index: 1;
             /* Animation Properties */
-            max-height: 0; /* Start collapsed */
-            overflow: hidden; /* Hide content when collapsed */
+            max-height: 0;
+            overflow: hidden;
             opacity: 0;
-            transition: max-height 0.5s ease-out, opacity 0.4s ease-in, padding 0.5s ease-out, margin-top 0.5s ease-out;
+            transition: max-height 0.5s ease-out, opacity 0.4s ease-in, padding 0.5s ease-out, margin-top 0.5s ease-out, visibility 0s linear 0.5s; /* Delay visibility transition */
+            display: block;
+            visibility: hidden; /* Use visibility */
         }
-        #google_translate_element.show { /* State when dropdown is visible */
-            display: block; /* Needs block for height */
-            max-height: 300px; /* Set high enough to contain dropdown */
+        #google_translate_element.show { /* Visible state */
+            visibility: visible;
+            max-height: 300px;
             opacity: 1;
-            padding: 15px; /* Restore padding */
-            margin-top: 10px; /* Push down below button */
+            padding: 15px;
+            margin-top: 10px;
+            transition: max-height 0.5s ease-out, opacity 0.4s ease-in 0.1s, padding 0.5s ease-out, margin-top 0.5s ease-out, visibility 0s linear 0s; /* Remove visibility delay */
         }
          /* Style Google's select dropdown */
         #google_translate_element select.goog-te-combo {
@@ -265,7 +276,7 @@
              border-radius: 8px;
              font-family: var(--font-family);
              color: var(--text-primary);
-             box-shadow: var(--shadow-light), var(--shadow-dark);
+             box-shadow: var(--shadow-light), var(--shadow-dark); /* Outset style */
              cursor: pointer;
              margin: 0;
              appearance: none;
@@ -273,7 +284,7 @@
              -moz-appearance: none;
              outline: none;
              min-width: 150px;
-             width: 100%; /* Make it take container width */
+             width: 100%;
         }
          /* Hide Google's "Powered by" link */
          #google_translate_element a {
@@ -431,7 +442,7 @@
         .contact-text {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: flex-start; /* Keep text left-aligned */
             text-align: left;
             width: 100%;
             max-width: 280px;
@@ -521,10 +532,8 @@
         <!-- Translate Button and Dropdown Container -->
         <div class="translate-container">
             <button id="translate-button" class="neumorphic-button">
-                <!-- New Language SVG Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor">
-                    <path d="M0 0h24v24H0V0z" fill="none"/><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
-                </svg>
+                <!-- Restored Image Icon -->
+                <img src="https://i.postimg.cc/8P8tymg8/Google-Translate-Small.png" alt="Translate Icon">
                 Translate
             </button>
             <!-- DIV for Google Translate Widget (Initially Hidden) -->
@@ -678,6 +687,7 @@
                 let isTranslateInitialized = false;
 
                 translateButton.addEventListener('click', function() {
+                    // Initialize only ONCE on the first click if not already done
                     if (!isTranslateInitialized && typeof google !== 'undefined' && google.translate && google.translate.TranslateElement) {
                          if (!translateElement.querySelector(".skiptranslate")) {
                              try {
@@ -697,10 +707,9 @@
 
                     // Toggle visibility only if it seems ready or initialized
                     if (isTranslateInitialized || translateElement.querySelector(".skiptranslate")) {
-                        translateElement.classList.toggle('show');
+                         translateElement.classList.toggle('show');
                     } else {
                          console.warn("Cannot show Translate widget - initialization may have failed or library not ready.");
-                         // alert("Translation service is not ready yet. Please try again in a moment.");
                     }
                 });
             } else {
@@ -711,14 +720,13 @@
 
     <!-- Google Translate Widget Initialization -->
     <script type="text/javascript">
-        // This function is called by the Google script OR the click listener
         function googleTranslateElementInit() {
             if (!document.querySelector("#google_translate_element > .skiptranslate")) {
                 console.log("Attempting to initialize Google Translate widget...");
-                 try { // Add try...catch here too
+                 try {
                     new google.translate.TranslateElement({
                         pageLanguage: 'en',
-                        includedLanguages: 'ta,en,te,ml,or,mr,bn,gu,kn,pa,hi', // YOUR LANGUAGES
+                        includedLanguages: 'ta,en,te,ml,or,mr,bn,gu,kn,pa,hi',
                         layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                         autoDisplay: false
                     }, 'google_translate_element');
@@ -736,4 +744,4 @@
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
 
 </body>
-    </html>
+</html>

@@ -30,7 +30,6 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            /* Disable tap highlight on mobile */
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -113,6 +112,7 @@
              font-weight: 500;
              margin-top: 0;
              margin-bottom: 20px;
+             line-height: 1.5;
         }
         p.verification-instruction {
             font-size: 1rem;
@@ -215,37 +215,47 @@
             box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
             color: var(--primary-accent);
         }
-        .neumorphic-button img, .neumorphic-button svg {
+        .neumorphic-button svg { /* Style SVG icons in buttons */
             width: 18px;
             height: 18px;
-            vertical-align: middle;
+            fill: currentColor; /* Icon color matches text */
+            transition: fill 0.2s ease;
+        }
+        .neumorphic-button:hover svg {
+             fill: var(--primary-accent); /* Change icon color on hover */
         }
 
-        /* --- Translate Button & Widget (Restored) --- */
+        /* --- Translate Button & Widget --- */
         .translate-container {
             margin-bottom: 30px;
             text-align: center;
+            position: relative; /* Needed for positioning dropdown */
         }
-        #translate-button { /* Button style */
-             /* Uses .neumorphic-button base */
+        #translate-button {
+             /* Uses .neumorphic-button */
+             position: relative; /* To keep it above dropdown */
+             z-index: 2;
         }
-        #translate-button img { /* Icon within button */
-             width: 20px;
-             height: 20px;
+        #google_translate_element { /* The container DIV for Google's widget */
+            background: var(--bg-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
+            padding: 15px; /* Add padding */
+            margin-top: -10px; /* Overlap slightly with button */
+            position: relative;
+            z-index: 1;
+            /* Animation Properties */
+            max-height: 0; /* Start collapsed */
+            overflow: hidden; /* Hide content when collapsed */
+            opacity: 0;
+            transition: max-height 0.5s ease-out, opacity 0.4s ease-in, padding 0.5s ease-out, margin-top 0.5s ease-out;
         }
-        #google_translate_element { /* Dropdown container */
-            margin-top: 15px;
-            display: none; /* Hide initially */
-            text-align: center;
-             background: var(--bg-color);
-             padding: 5px;
-             border-radius: var(--border-radius);
-             box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Indented container */
-             display: none; /* Initially hidden */
-        }
-        #google_translate_element.show { /* Class to show dropdown */
-            display: inline-block;
-            max-width: 90%; /* Prevent excessive width */
+        #google_translate_element.show { /* State when dropdown is visible */
+            display: block; /* Needs block for height */
+            max-height: 300px; /* Set high enough to contain dropdown */
+            opacity: 1;
+            padding: 15px; /* Restore padding */
+            margin-top: 10px; /* Push down below button */
         }
          /* Style Google's select dropdown */
         #google_translate_element select.goog-te-combo {
@@ -255,7 +265,7 @@
              border-radius: 8px;
              font-family: var(--font-family);
              color: var(--text-primary);
-             box-shadow: var(--shadow-light), var(--shadow-dark); /* Extruded select */
+             box-shadow: var(--shadow-light), var(--shadow-dark);
              cursor: pointer;
              margin: 0;
              appearance: none;
@@ -263,6 +273,7 @@
              -moz-appearance: none;
              outline: none;
              min-width: 150px;
+             width: 100%; /* Make it take container width */
         }
          /* Hide Google's "Powered by" link */
          #google_translate_element a {
@@ -278,7 +289,7 @@
         }
         iframe.goog-te-banner-frame { display: none !important; }
 
-        /* --- Action Buttons (Copy, Open, Join) --- */
+        /* --- Action Buttons --- */
         .action-button {
             background-color: var(--bg-color);
             color: var(--text-primary);
@@ -353,7 +364,7 @@
             border: none;
             box-shadow: var(--shadow-light), var(--shadow-dark);
             border-radius: var(--border-radius);
-            text-align: center; /* Center align block content */
+            text-align: center;
         }
         .verified-section .verification-instruction {
              display: inline-block;
@@ -372,7 +383,7 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Center list items */
+            align-items: center;
         }
         .contact-item {
             display: flex;
@@ -420,10 +431,10 @@
         .contact-text {
             display: flex;
             flex-direction: column;
-            align-items: flex-start; /* Align labels/values left */
-            text-align: left; /* Keep text left-aligned */
+            align-items: flex-start;
+            text-align: left;
             width: 100%;
-            max-width: 280px; /* Control width of text block */
+            max-width: 280px;
         }
 
         .contact-label {
@@ -458,7 +469,7 @@
         }
 
         /* --- Responsive Adjustments --- */
-        @media (max-width: 768px) { /* Tablet and smaller */
+        @media (max-width: 768px) {
             body { padding: 30px 15px; }
             .container { padding: 30px; }
             h1 { font-size: 1.8rem; }
@@ -466,7 +477,7 @@
             .verified-section h2 { padding-left: 35px; }
             .animated-tick-container { width: 25px; height: 25px; }
         }
-        @media (max-width: 480px) { /* Smaller mobile phones */
+        @media (max-width: 480px) {
              h1 { font-size: 1.6rem; gap: 8px; }
              .container { padding: 25px 20px; }
              .warning-section, .verified-section { padding: 20px; }
@@ -492,13 +503,13 @@
                  max-width: 300px;
                  margin-left: auto;
                  margin-right: auto;
-                 display: block; /* Ensure it takes width */
+                 display: block;
              }
              .verified-section h2 { font-size: 1.2rem; padding-left: 30px; }
              .animated-tick-container { width: 20px; height: 20px; }
              p.verification-instruction { padding: 15px; font-size: 0.95rem; }
              .verified-section .original-admin-statement { font-size: 0.95rem; }
-             .contact-text { max-width: 100%; align-items: center; text-align: center;} /* Center text on small screens */
+             .contact-text { max-width: 100%; align-items: center; text-align: center;}
              .contact-label { text-align: center; }
         }
     </style>
@@ -510,7 +521,10 @@
         <!-- Translate Button and Dropdown Container -->
         <div class="translate-container">
             <button id="translate-button" class="neumorphic-button">
-                <img src="https://i.postimg.cc/8P8tymg8/Google-Translate-Small.png" alt="Google Translate Icon">
+                <!-- New Language SVG Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor">
+                    <path d="M0 0h24v24H0V0z" fill="none"/><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+                </svg>
                 Translate
             </button>
             <!-- DIV for Google Translate Widget (Initially Hidden) -->
@@ -539,7 +553,9 @@
                 <li>Requests sensitive personal/account info.</li>
             </ul>
             <p><strong>TRUST ONLY</strong> the details listed below in the Verified section. Any difference is a major red flag!</p>
-            <p class="final-warning">Contacting the FAKE admin will lead to loss. Verify Carefully!</p>
+            <p class="final-warning">
+                If You Contacting the FAKE admin will lead to loss. Verify Carefully!
+            </p>
         </section>
 
         <!-- ====== OFFICIAL ADMIN INFO SECTION ====== -->
@@ -554,7 +570,8 @@
                 Verified KS Admin Contacts
             </h2>
             <p class="original-admin-statement">
-                This section lists the <strong>ONLY Original KS Admin</strong> contact details.
+                This section lists the<br>
+                <strong>ONLY Original KS Admin</strong> contact details.
             </p>
             <p class="verification-instruction">
                 <strong>Important:</strong> Verify the KS Admin's identity <strong>ONLY</strong> using these official methods. <strong>Confirm details *before* contacting</strong>. Do not use profile pictures for verification.
@@ -652,38 +669,38 @@
             });
         }
 
-        // Translate Button Toggle Logic (Restored)
+        // Translate Button Toggle Logic
         document.addEventListener('DOMContentLoaded', function() {
             const translateButton = document.getElementById('translate-button');
             const translateElement = document.getElementById('google_translate_element');
 
             if (translateButton && translateElement) {
-                let isTranslateInitialized = false; // Flag to track initialization
+                let isTranslateInitialized = false;
 
                 translateButton.addEventListener('click', function() {
-                    // Initialize only ONCE on the first click if not already done
                     if (!isTranslateInitialized && typeof google !== 'undefined' && google.translate && google.translate.TranslateElement) {
-                        if (!translateElement.querySelector(".skiptranslate")) {
-                            try {
-                                googleTranslateElementInit();
-                                isTranslateInitialized = true; // Set flag after successful init
-                            } catch (error) {
-                                console.error("Error initializing Google Translate on click: ", error);
-                                // Optionally provide feedback to the user here
-                            }
-                        } else {
-                           isTranslateInitialized = true; // Already initialized by Google somehow
-                        }
+                         if (!translateElement.querySelector(".skiptranslate")) {
+                             try {
+                                 googleTranslateElementInit();
+                                 isTranslateInitialized = true;
+                                 console.log("Google Translate Initialized on click.");
+                             } catch (error) {
+                                 console.error("Error initializing Google Translate on click: ", error);
+                             }
+                         } else {
+                             isTranslateInitialized = true;
+                             console.log("Google Translate already populated.");
+                         }
                     } else if (typeof google === 'undefined') {
                          console.error("Google Translate library not loaded yet.");
                     }
 
-                    // Toggle visibility only AFTER trying to initialize (if needed)
-                    if (isTranslateInitialized || translateElement.querySelector(".skiptranslate") ) {
-                         translateElement.classList.toggle('show');
+                    // Toggle visibility only if it seems ready or initialized
+                    if (isTranslateInitialized || translateElement.querySelector(".skiptranslate")) {
+                        translateElement.classList.toggle('show');
                     } else {
-                         // Handle case where init failed or library wasn't ready
-                         console.warn("Cannot show Translate widget - initialization might have failed or library not ready.");
+                         console.warn("Cannot show Translate widget - initialization may have failed or library not ready.");
+                         // alert("Translation service is not ready yet. Please try again in a moment.");
                     }
                 });
             } else {
@@ -694,19 +711,28 @@
 
     <!-- Google Translate Widget Initialization -->
     <script type="text/javascript">
-        // This function is called by the Google script or manually on first click
+        // This function is called by the Google script OR the click listener
         function googleTranslateElementInit() {
             if (!document.querySelector("#google_translate_element > .skiptranslate")) {
-                new google.translate.TranslateElement({
-                    pageLanguage: 'en',
-                    includedLanguages: 'ta,en,te,ml,or,mr,bn,gu,kn,pa,hi', // YOUR LANGUAGES
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                    autoDisplay: false
-                }, 'google_translate_element');
+                console.log("Attempting to initialize Google Translate widget...");
+                 try { // Add try...catch here too
+                    new google.translate.TranslateElement({
+                        pageLanguage: 'en',
+                        includedLanguages: 'ta,en,te,ml,or,mr,bn,gu,kn,pa,hi', // YOUR LANGUAGES
+                        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                        autoDisplay: false
+                    }, 'google_translate_element');
+                 } catch (error) {
+                     console.error("Error initializing Google Translate in init function: ", error);
+                     const el = document.getElementById('google_translate_element');
+                     if (el) el.innerHTML = 'Translation failed to load.';
+                 }
+            } else {
+                 console.log("Skipping duplicate Google Translate initialization.");
             }
         }
     </script>
-    <!-- Load Google script (async defer is good practice) -->
+    <!-- Load Google script -->
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
 
 </body>

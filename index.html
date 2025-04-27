@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> {/* Essential for responsiveness */}
     <title>Official KS Admin Verification & FAKE Admin Warning</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,8 +56,8 @@
             padding: 40px;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            max-width: 750px;
-            width: 100%;
+            max-width: 750px; /* Caps width on large screens */
+            width: 100%;    /* Takes available width on smaller screens */
             text-align: center;
             border-top: 4px solid var(--primary-color);
             position: relative;
@@ -132,7 +132,6 @@
             background-color: var(--primary-color);
             color: white;
             border: none;
-            /* Subtle bottom border for 3D effect */
             border-bottom: 3px solid var(--primary-color-darker);
             padding: 10px 20px;
             border-radius: 6px;
@@ -144,32 +143,30 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 3px 6px rgba(46, 134, 193, 0.2); /* Slightly adjusted shadow */
-            position: relative; /* Needed for active state */
-            top: 0; /* Needed for active state */
+            box-shadow: 0 3px 6px rgba(46, 134, 193, 0.2);
+            position: relative;
+            top: 0;
         }
         #translate-button:hover {
             background-color: var(--primary-color-darker);
             border-bottom-color: var(--primary-color-darkest);
-            box-shadow: 0 5px 8px rgba(46, 134, 193, 0.3); /* Enhanced shadow on hover */
+            box-shadow: 0 5px 8px rgba(46, 134, 193, 0.3);
         }
         #translate-button:active {
              background-color: var(--primary-color-darkest);
-             box-shadow: 0 1px 3px rgba(46, 134, 193, 0.2); /* Smaller shadow when pressed */
-             /* Simulate button press down */
+             box-shadow: 0 1px 3px rgba(46, 134, 193, 0.2);
              top: 1px;
              border-bottom-width: 2px;
         }
 
-        /* Style for the image icon inside the button */
         #translate-button img {
-            width: 20px; /* Adjust size as needed */
+            width: 20px;
             height: 20px;
-            vertical-align: middle; /* Align image nicely with text */
+            vertical-align: middle;
         }
 
         #google_translate_element {
-            margin-top: 15px; /* Space between button and dropdown when visible */
+            margin-top: 15px;
             display: none; /* Hide initially */
             text-align: center;
         }
@@ -179,8 +176,7 @@
 
         /* Prevent Google's top frame */
         .goog-te-banner-frame.skiptranslate { display: none !important; }
-        body { top: 0px !important; } /* Override Google's inline style */
-
+        body { top: 0px !important; }
 
         /* --- Warning Section --- */
         .warning-section {
@@ -194,7 +190,7 @@
         }
         .warning-section h2 {
             color: var(--warning-color);
-            justify-content: flex-start; /* Align left */
+            justify-content: flex-start;
             margin-bottom: 15px;
         }
         .warning-section p {
@@ -205,7 +201,7 @@
         .warning-section p:last-child { margin-bottom: 0; }
         .warning-section ul {
             color: var(--warning-text-dark);
-            list-style-position: inside; /* Indent bullets */
+            list-style-position: inside;
             padding-left: 5px;
             margin-top: 10px;
             margin-bottom: 15px;
@@ -224,17 +220,17 @@
         .verified-section {
             margin-top: 35px;
             padding: 30px;
-            background-color: #F8F9FA; /* Subtle background */
+            background-color: #F8F9FA;
             border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
             text-align: left;
         }
         .verified-section h2 {
             color: var(--verified-color);
-            justify-content: flex-start; /* Align left */
+            justify-content: flex-start;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 15px;
-            margin-bottom: 25px; /* Space before instruction */
+            margin-bottom: 25px;
         }
 
         /* --- Contact List --- */
@@ -246,20 +242,20 @@
         .contact-item {
             display: flex;
             align-items: center;
-            padding: 18px 0; /* More vertical space */
+            padding: 18px 0;
             border-bottom: 1px solid var(--border-color);
             gap: 15px;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Allows wrapping on smaller screens */
         }
         .contact-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .contact-item:first-child { padding-top: 0; } /* No top padding on first item after instruction */
+        .contact-item:first-child { padding-top: 0; }
 
         .contact-icon {
             color: var(--primary-color);
-            background-color: #EBF5FB; /* Light blue background */
+            background-color: #EBF5FB;
             border-radius: 50%;
             padding: 8px;
-            width: 40px; /* Fixed size circle */
+            width: 40px;
             height: 40px;
             display: flex;
             justify-content: center;
@@ -273,14 +269,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 10px; /* Gap between text and button */
+            flex-wrap: wrap; /* Allows button to wrap below text if needed */
+            gap: 10px;
         }
 
         .contact-text {
             display: flex;
             flex-direction: column;
-            align-items: flex-start; /* Align text left */
+            align-items: flex-start;
         }
 
         .contact-label {
@@ -295,9 +291,9 @@
             font-weight: 600;
             color: var(--text-primary);
             font-size: 1rem;
-            word-break: break-all;
+            word-break: break-all; /* Prevents long text overflow */
         }
-        .contact-value a { font-weight: 600; } /* Make links bold */
+        .contact-value a { font-weight: 600; }
 
         /* --- Action Button --- */
         .action-button { /* For Copy/Open/Join buttons */
@@ -344,24 +340,40 @@
         }
 
         /* --- Responsive Adjustments --- */
-        @media (max-width: 768px) {
+        @media (max-width: 768px) { /* Tablet and smaller */
             body { padding: 30px 15px; }
             .container { padding: 30px; }
             h1 { font-size: 1.8rem; }
             h2 { font-size: 1.3rem; }
-            .contact-item { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .contact-content { flex-direction: column; align-items: flex-start; width: 100%; }
-            .action-button { margin-top: 8px; } /* Applies to copy/open/join */
+            .contact-item {
+                flex-direction: column; /* Stack icon and content */
+                align-items: flex-start; /* Align items left */
+                gap: 10px;
+             }
+            .contact-content {
+                flex-direction: column; /* Stack text and button */
+                align-items: flex-start; /* Align left */
+                width: 100%; /* Take full width */
+             }
+            .action-button {
+                margin-top: 8px; /* Space when button wraps below text */
+            }
         }
-        @media (max-width: 480px) {
+        @media (max-width: 480px) { /* Smaller mobile phones */
              h1 { font-size: 1.6rem; gap: 8px; }
              .container { padding: 25px 20px; }
              .warning-section, .verified-section { padding: 20px; }
              .contact-icon { width: 36px; height: 36px; padding: 7px;}
              .contact-icon svg { width: 18px; height: 18px;}
              .contact-value { font-size: 0.95rem; }
-             .action-button, #translate-button { width: 100%; justify-content: center; } /* Full width buttons */
-             #translate-button { margin-bottom: 15px; } /* Add space below full-width translate button */
+             /* Make buttons full width for easy tapping */
+             .action-button, #translate-button {
+                 width: 100%;
+                 justify-content: center;
+             }
+             #translate-button {
+                 margin-bottom: 15px; /* Add space below full-width translate button */
+             }
         }
     </style>
 </head>
@@ -518,7 +530,7 @@
           if (!document.querySelector("#google_translate_element > .skiptranslate")) {
                 new google.translate.TranslateElement({
                     pageLanguage: 'en', // Source language of the page
-                    includedLanguages: 'ta,en,te,ml,or,mr,bn,gu,kn,pa,hi', // SPECIFIED LANGUAGES HERE
+                    includedLanguages: 'ta,en,te,ml,or,mr,bn,gu,kn,pa,hi', // SPECIFIED LANGUAGES
                     layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                     autoDisplay: false
                 }, 'google_translate_element');

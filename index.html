@@ -3,160 +3,551 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Profile</title>
-    <!-- Using Bootstrap for quick styling -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Official KS Admin Verification & FAKE Admin Warning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Optional: Basic styling */
-        body { padding: 20px; background-color: #f8f9fa; }
-        .container { max-width: 600px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-top: 20px; }
-        footer { margin-top: 30px; text-align: center; color: #6c757d; }
+        /* --- Configuration --- */
+        :root {
+            --primary-color: #2E86C1; /* A slightly richer blue */
+            --primary-color-darker: #1F618D;
+            --primary-color-darkest: #1A5276;
+            --verified-color: #2ECC71; /* Vibrant green */
+            --warning-color: #E74C3C; /* Strong but standard red */
+            --warning-bg-light: #FDECEA;
+            --warning-text-dark: #A93226;
+            --bg-color: #F4F6F9; /* Lighter, cooler background */
+            --card-bg: #FFFFFF;
+            --text-primary: #212529;
+            --text-secondary: #6C757D;
+            --border-color: #EAECEE;
+            --border-radius: 10px; /* Slightly larger radius */
+            --shadow: 0 5px 20px rgba(0, 91, 154, 0.08); /* Softer shadow */
+            --font-family: 'Inter', sans-serif;
+        }
+
+        /* --- Base & Reset --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.65;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px; /* More padding */
+        }
+
+        /* --- Main Container Card --- */
+        .container {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            max-width: 750px;
+            width: 100%;
+            text-align: center;
+            border-top: 4px solid var(--primary-color);
+            position: relative;
+        }
+
+        /* --- Typography --- */
+        h1, h2 {
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: 2.1rem;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        p.lead {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+        }
+        p.verification-instruction {
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            background-color: #eaf2f8; /* Light blue background for emphasis */
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        strong { font-weight: 600; color: var(--text-primary); }
+        a { color: var(--primary-color); text-decoration: none; transition: color 0.2s ease; }
+        a:hover { color: var(--primary-color-darker); text-decoration: underline; }
+
+        /* --- Icons --- */
+        .icon { /* Generic icon styling */
+            width: 1.2em; /* Relative to font size */
+            height: 1.2em;
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+        .icon-lg { width: 1.5em; height: 1.5em; }
+
+        /* --- Translate Button & Widget --- */
+        .translate-container {
+            margin-bottom: 25px; /* Space below button/dropdown */
+            text-align: center;
+        }
+
+        #translate-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            /* Subtle bottom border for 3D effect */
+            border-bottom: 3px solid var(--primary-color-darker);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: var(--font-family);
+            font-weight: 600;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease, border-bottom-color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 6px rgba(46, 134, 193, 0.2); /* Slightly adjusted shadow */
+            position: relative; /* Needed for active state */
+            top: 0; /* Needed for active state */
+        }
+        #translate-button:hover {
+            background-color: var(--primary-color-darker);
+            border-bottom-color: var(--primary-color-darkest);
+            box-shadow: 0 5px 8px rgba(46, 134, 193, 0.3); /* Enhanced shadow on hover */
+        }
+        #translate-button:active {
+             background-color: var(--primary-color-darkest);
+             box-shadow: 0 1px 3px rgba(46, 134, 193, 0.2); /* Smaller shadow when pressed */
+             /* Simulate button press down */
+             top: 1px;
+             border-bottom-width: 2px;
+        }
+
+        /* Style for the image icon inside the button */
+        #translate-button img {
+            width: 20px; /* Adjust size as needed */
+            height: 20px;
+            vertical-align: middle; /* Align image nicely with text */
+        }
+
+        #google_translate_element {
+            margin-top: 15px; /* Space between button and dropdown when visible */
+            display: none; /* Hide initially */
+            text-align: center;
+        }
+        #google_translate_element.show {
+            display: block; /* Show when class is added */
+        }
+
+        /* Prevent Google's top frame */
+        .goog-te-banner-frame.skiptranslate { display: none !important; }
+        body { top: 0px !important; } /* Override Google's inline style */
+
+
+        /* --- Warning Section --- */
+        .warning-section {
+            background-color: var(--warning-bg-light);
+            border: 1px solid #F5B7B1;
+            border-left: 5px solid var(--warning-color);
+            padding: 25px;
+            margin: 35px 0;
+            border-radius: var(--border-radius);
+            text-align: left;
+        }
+        .warning-section h2 {
+            color: var(--warning-color);
+            justify-content: flex-start; /* Align left */
+            margin-bottom: 15px;
+        }
+        .warning-section p {
+            color: var(--warning-text-dark);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        .warning-section p:last-child { margin-bottom: 0; }
+        .warning-section ul {
+            color: var(--warning-text-dark);
+            list-style-position: inside; /* Indent bullets */
+            padding-left: 5px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        .warning-section li {
+            margin-bottom: 5px;
+        }
+        .warning-section .final-warning {
+             font-weight: 700;
+             color: var(--warning-color);
+             margin-top: 15px;
+        }
+
+
+        /* --- Verified Admin Section --- */
+        .verified-section {
+            margin-top: 35px;
+            padding: 30px;
+            background-color: #F8F9FA; /* Subtle background */
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            text-align: left;
+        }
+        .verified-section h2 {
+            color: var(--verified-color);
+            justify-content: flex-start; /* Align left */
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px; /* Space before instruction */
+        }
+
+        /* --- Contact List --- */
+        .contact-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 0; /* More vertical space */
+            border-bottom: 1px solid var(--border-color);
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .contact-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .contact-item:first-child { padding-top: 0; } /* No top padding on first item after instruction */
+
+        .contact-icon {
+            color: var(--primary-color);
+            background-color: #EBF5FB; /* Light blue background */
+            border-radius: 50%;
+            padding: 8px;
+            width: 40px; /* Fixed size circle */
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .contact-icon svg { width: 20px; height: 20px; }
+
+        .contact-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px; /* Gap between text and button */
+        }
+
+        .contact-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align text left */
+        }
+
+        .contact-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .contact-value {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1rem;
+            word-break: break-all;
+        }
+        .contact-value a { font-weight: 600; } /* Make links bold */
+
+        /* --- Action Button --- */
+        .action-button { /* For Copy/Open/Join buttons */
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: var(--font-family);
+            font-weight: 600;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 5px rgba(46, 134, 193, 0.2);
+        }
+        .action-button:hover {
+            background-color: var(--primary-color-darker);
+            box-shadow: 0 4px 8px rgba(46, 134, 193, 0.3);
+        }
+        .action-button:active {
+            background-color: var(--primary-color-darkest);
+            box-shadow: none;
+        }
+        .action-button svg { width: 14px; height: 14px; }
+
+        .action-button.copied {
+            background-color: var(--verified-color);
+            box-shadow: 0 2px 5px rgba(46, 204, 113, 0.2);
+        }
+        .action-button.copied:hover {
+             background-color: #27AE60;
+             box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+        }
+
+        /* --- Footer --- */
+        .footer-note {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            body { padding: 30px 15px; }
+            .container { padding: 30px; }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.3rem; }
+            .contact-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .contact-content { flex-direction: column; align-items: flex-start; width: 100%; }
+            .action-button { margin-top: 8px; } /* Applies to copy/open/join */
+        }
+        @media (max-width: 480px) {
+             h1 { font-size: 1.6rem; gap: 8px; }
+             .container { padding: 25px 20px; }
+             .warning-section, .verified-section { padding: 20px; }
+             .contact-icon { width: 36px; height: 36px; padding: 7px;}
+             .contact-icon svg { width: 18px; height: 18px;}
+             .contact-value { font-size: 0.95rem; }
+             .action-button, #translate-button { width: 100%; justify-content: center; } /* Full width buttons */
+             #translate-button { margin-bottom: 15px; } /* Add space below full-width translate button */
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1 class="mb-4 text-center">Add New ID Profile</h1>
-        <!-- Area for showing success/error messages -->
-        <div id="message-area" class="mb-3"></div>
 
-        <!-- The form for adding profiles -->
-        <form id="add-profile-form">
-            <div class="mb-3">
-                <label for="image-url" class="form-label">Image URL</label>
-                <input type="url" class="form-control" id="image-url" placeholder="https://example.com/image.jpg" required>
-                <small class="form-text text-muted">Paste the full web address (URL) of an image.</small>
-            </div>
+        <!-- Translate Button and Dropdown Container -->
+        <div class="translate-container">
+            <button id="translate-button">
+                <!-- Updated Google Translate Logo Image -->
+                <img src="https://i.postimg.cc/8P8tymg8/Google-Translate-Small.png" alt="Google Translate Icon">
+                Translate
+            </button>
+            <!-- DIV for Google Translate Widget -->
+            <div id="google_translate_element"></div>
+        </div>
 
-            <div class="row mb-3">
-               <div class="col-md-6">
-                    <label for="id-level" class="form-label">ID Level</label>
-                    <input type="text" class="form-control" id="id-level" placeholder="e.g., Level 5" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="group-level" class="form-label">Group Level</label>
-                    <input type="text" class="form-control" id="group-level" placeholder="e.g., Alpha" required>
-                </div>
-            </div>
+        <h1>
+            <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.07 14.07l-3.5-3.5a.996.996 0 1 1 1.41-1.41L10.93 14.24l5.5-5.5a.996.996 0 1 1 1.41 1.41l-6.91 6.91c-.38.38-.99.38-1.38-.04z"></path></svg>
+            KS Admin Official Verification
+        </h1>
+        <p class="lead">Confirm the genuine KS Admin contacts and protect yourself from impersonators.</p>
 
-            <div class="mb-3">
-                <label for="price" class="form-label">Price</label>
-                <div class="input-group">
-                    <span class="input-group-text">$</span>
-                    <input type="number" step="0.01" min="0" class="form-control" id="price" placeholder="e.g., 99.50" required>
-                </div>
-            </div>
+        <!-- ====== CRITICAL SCAM WARNING SECTION ====== -->
+        <section class="warning-section">
+            <h2>
+                <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2V9h2v5z"></path></svg>
+                Beware of FAKE KS Admin Impersonators!
+            </h2>
+            <p>It is confirmed that a <strong>FAKE KS Admin</strong> is actively trying to deceive users. This impersonator aims to <strong>steal your money and personal information</strong>.</p>
+            <p>The FAKE admin may try to trick you by:</p>
+            <ul>
+                <li>Using a Telegram ID or Phone Number that looks <strong>very similar</strong> to the real one (check carefully!).</li>
+                <li>Contacting you <strong>first</strong> unexpectedly (unsolicited messages).</li>
+                <li>Creating a false sense of <strong>urgency</strong>, pressuring you to act quickly.</li>
+                <li>Asking for <strong>payments</strong>, especially upfront fees, for services or help.</li>
+                <li>Requesting sensitive <strong>personal details</strong> or account information.</li>
+            </ul>
+            <p><strong>DO NOT TRUST</strong> any contact information other than what is listed in the "Verified KS Admin Details" section below. Even a small difference means it's likely the FAKE admin.</p>
+            <p class="final-warning">Sending money or information to the FAKE admin will result in loss. Always verify using this page.</p>
+        </section>
 
-            <!-- Buttons -->
-            <div class="d-grid gap-2">
-                 <button type="submit" class="btn btn-primary">Add Profile to List</button>
-                 <!-- Link to the viewing page -->
-                 <a href="profiles.html" class="btn btn-secondary">View Saved Profiles</a>
-            </div>
-        </form>
+        <!-- ====== OFFICIAL ADMIN INFO SECTION ====== -->
+        <section class="verified-section">
+            <h2>
+                <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.95 7.53l-7.17 7.17a.996.996 0 0 1-1.41 0l-3.83-3.83a.996.996 0 1 1 1.41-1.41L10.94 15.1l6.07-6.07c.39-.39 1.02-.39 1.41 0 .4.39.4 1.03.03 1.41z"></path></svg>
+                The ONLY Verified KS Admin Details
+            </h2>
+
+            <!-- Instruction about verification method -->
+            <p class="verification-instruction">
+                <strong>Important:</strong> Verify the KS Admin's identity <strong>ONLY</strong> using the official contact methods listed below. Please <strong>confirm these details are correct *before* initiating contact</strong>. Do not rely on profile pictures for verification, as per the Admin's request.
+            </p>
+
+            <ul class="contact-list">
+                <!-- Phone Number -->
+                <li class="contact-item">
+                    <div class="contact-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg>
+                    </div>
+                    <div class="contact-content">
+                         <div class="contact-text">
+                            <span class="contact-label">Phone Number</span>
+                            <span id="phone-number" class="contact-value">9655636477</span>
+                        </div>
+                        <button class="action-button" onclick="copyToClipboard('phone-number', this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"> <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/> <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/> </svg>
+                            Copy Number
+                        </button>
+                    </div>
+                </li>
+                <!-- Telegram Direct Chat -->
+                <li class="contact-item">
+                    <div class="contact-icon">
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.17 7.17l-1.97 9.28c-.1.48-.44.6-.84.38l-2.98-2.19-1.44-1.39-.08-.08c-.69-.67-.37-1.04.4-1.68l6.64-6.03c.3-.27-.04-.43-.45-.16L7.7 12.76l-2.97-.92c-.48-.15-.48-.47 0-.58l11.19-4.35c.4-.16.77.1.65.56z"></path></svg>
+                    </div>
+                    <div class="contact-content">
+                         <div class="contact-text">
+                            <span class="contact-label">Telegram Direct Chat</span>
+                            <span class="contact-value">
+                                <a id="telegram-link" href="https://t.me/ks_admin_68" target="_blank" rel="noopener noreferrer">@ks_admin_68</a>
+                            </span>
+                         </div>
+                         <a href="https://t.me/ks_admin_68" target="_blank" rel="noopener noreferrer" class="action-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 9.87a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
+                             Open Chat
+                         </a>
+                    </div>
+                </li>
+                <!-- Telegram Channel -->
+                 <li class="contact-item">
+                     <div class="contact-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14 11c0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2 2-.9 2-2zm-2-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-13c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z"></path></svg> <!-- Generic Channel/Broadcast icon -->
+                    </div>
+                    <div class="contact-content">
+                        <div class="contact-text">
+                            <span class="contact-label">Official Telegram Channel</span>
+                            <span class="contact-value">
+                                <a id="channel-link" href="https://t.me/kshacking" target="_blank" rel="noopener noreferrer">kshacking</a>
+                            </span>
+                        </div>
+                         <a href="https://t.me/kshacking" target="_blank" rel="noopener noreferrer" class="action-button">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/></svg>
+                             Join Channel
+                         </a>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <p class="footer-note">
+            Always double-check contact details before engaging. Stay vigilant against impersonators.
+        </p>
     </div>
 
-    <footer class="container">
-        <p>© 2023 Simple Profile Manager (localStorage)</p>
-    </footer>
-
-    <!-- JavaScript for handling the form -->
+    <!-- Existing Copy Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('add-profile-form');
-            const messageArea = document.getElementById('message-area');
+        function copyToClipboard(elementId, buttonElement) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            const originalButtonContent = buttonElement.innerHTML; // Store original HTML
 
-            // --- Function to show messages ---
-            function showMessage(message, type = 'success') {
-                // Using Bootstrap alert styles
-                messageArea.innerHTML = `<div class="alert alert-${type}" role="alert">${escapeHtml(message)}</div>`;
-                // Clear message after 3 seconds
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                buttonElement.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                    Copied!`;
+                buttonElement.classList.add('copied'); // Add class for styling
+                buttonElement.disabled = true;
+
                 setTimeout(() => {
-                   if(messageArea) messageArea.innerHTML = '';
-                }, 3000);
-            }
+                    buttonElement.innerHTML = originalButtonContent; // Restore original content
+                    buttonElement.classList.remove('copied'); // Remove class
+                    buttonElement.disabled = false;
+                }, 2500);
 
-             // --- Simple HTML escaping helper (to prevent basic issues) ---
-             function escapeHtml(unsafe) {
-               if (typeof unsafe !== 'string') {
-                   if (unsafe === null || unsafe === undefined) return '';
-                    unsafe = String(unsafe);
-               }
-               return unsafe
-                   .replace(/&/g, "&")
-                   .replace(/</g, "<")
-                   .replace(/>/g, ">")
-                   .replace(/"/g, """)
-                   .replace(/'/g, "'");
-             }
-
-            // --- Handle form submission ---
-            form.addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent the default form submission which reloads the page
-
-                // --- Get data from form inputs ---
-                const newProfile = {
-                    imageUrl: document.getElementById('image-url').value.trim(),
-                    idLevel: document.getElementById('id-level').value.trim(),
-                    groupLevel: document.getElementById('group-level').value.trim(),
-                    price: parseFloat(document.getElementById('price').value),
-                    // Create a simple unique ID using the current time
-                    id: 'profile_' + Date.now()
-                };
-
-                // --- Basic Validation ---
-                if (!newProfile.imageUrl || !newProfile.idLevel || !newProfile.groupLevel || isNaN(newProfile.price) || newProfile.price < 0) {
-                    showMessage("Please fill in all fields correctly.", 'danger');
-                    return; // Stop processing if validation fails
-                }
-                 try { // Basic check if image URL looks like a URL
-                     new URL(newProfile.imageUrl);
-                 } catch (_) {
-                     showMessage("The Image URL doesn't look like a valid web address.", "warning");
-                     return;
-                 }
-
-                // --- Load existing profiles from localStorage ---
-                let profiles = [];
-                // Get the currently saved list (if any)
-                const storedProfiles = localStorage.getItem('digitalIdProfiles');
-                if (storedProfiles) {
-                    try {
-                        // Convert the stored string back into a JavaScript array
-                        profiles = JSON.parse(storedProfiles);
-                        // Safety check: make sure it's actually an array
-                        if (!Array.isArray(profiles)) {
-                            console.warn("Stored data wasn't an array, resetting.");
-                            profiles = [];
-                        }
-                    } catch (e) {
-                        // If data is corrupted/unreadable, start with an empty list
-                        console.error("Error parsing stored profiles:", e);
-                        showMessage("Could not read existing data. Starting fresh.", "warning");
-                        profiles = [];
-                    }
-                }
-
-                // --- Add the new profile to the list ---
-                profiles.push(newProfile);
-
-                // --- Save the updated list back to localStorage ---
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                // Fallback using prompt
                 try {
-                    // Convert the JavaScript array back into a string to save it
-                    localStorage.setItem('digitalIdProfiles', JSON.stringify(profiles));
-                    // Show success message and clear the form
-                    showMessage(`Profile added successfully! (Level: ${escapeHtml(newProfile.idLevel)})`, 'success');
-                    form.reset(); // Clear the input fields
-                    document.getElementById('image-url').focus(); // Put cursor back in first field
-                } catch (e) {
-                     // Handle potential errors like storage being full
-                     console.error("Error saving data to localStorage:", e);
-                     showMessage("Could not save data. Browser storage might be full or disabled.", "danger");
-                }
+                    window.prompt("Auto-copy failed. Press Ctrl+C (or Cmd+C) to copy manually:", textToCopy);
+                 } catch (e) {
+                    alert("Failed to copy. Please copy the text manually."); // Final fallback
+                 }
             });
+        }
+    </script>
+
+    <!-- Google Translate Widget Scripts -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+          // Check if the element already exists to prevent duplicates if script runs multiple times
+          if (!document.querySelector("#google_translate_element > .skiptranslate")) {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en', // Set the original language of your page
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE, // Keep it simple
+                    autoDisplay: false // Prevent the automatic banner
+                }, 'google_translate_element');
+          }
+        }
+
+        // Add event listener for the custom translate button
+        document.addEventListener('DOMContentLoaded', function() {
+            const translateButton = document.getElementById('translate-button');
+            const translateElement = document.getElementById('google_translate_element');
+
+            if (translateButton && translateElement) {
+                translateButton.addEventListener('click', function() {
+                    // Ensure the widget is initialized before trying to show it
+                    if (typeof google !== 'undefined' && google.translate && google.translate.TranslateElement) {
+                        // If it's the first click and the widget hasn't been initialized fully sometimes, re-init just in case
+                        if (!translateElement.querySelector(".skiptranslate")) {
+                             googleTranslateElementInit();
+                        }
+                    }
+                    // Toggle the visibility of the Google Translate dropdown
+                    translateElement.classList.toggle('show'); // Use toggle for simplicity
+                });
+            } else {
+                console.error("Translate button or element not found.");
+            }
         });
     </script>
-     <!-- Bootstrap JavaScript Bundle (needed for some components like alerts) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
+    <!-- Added async defer to potentially improve loading performance -->
+
 </body>
 </html>

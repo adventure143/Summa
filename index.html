@@ -2,29 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> {/* Essential for responsiveness */}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Official KS Admin Verification & FAKE Admin Warning</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> {/* Changed Font */}
     <style>
-        /* --- Configuration --- */
+        /* --- Neumorphic Theme Configuration --- */
         :root {
-            --primary-color: #2E86C1; /* A slightly richer blue */
-            --primary-color-darker: #1F618D;
-            --primary-color-darkest: #1A5276;
-            --verified-color: #2ECC71; /* Vibrant green */
-            --warning-color: #E74C3C; /* Strong but standard red */
-            --warning-bg-light: #FDECEA;
-            --warning-text-dark: #A93226;
-            --bg-color: #F4F6F9; /* Lighter, cooler background */
-            --card-bg: #FFFFFF;
-            --text-primary: #212529;
-            --text-secondary: #6C757D;
-            --border-color: #EAECEE;
-            --border-radius: 10px; /* Slightly larger radius */
-            --shadow: 0 5px 20px rgba(0, 91, 154, 0.08); /* Softer shadow */
-            --font-family: 'Inter', sans-serif;
+            --bg-color: #e0e5ec; /* Base background - Off-white/light grey is key */
+            --text-primary: #3a4a5e; /* Darker grey-blue for text */
+            --text-secondary: #7a8aa0;
+            --primary-accent: #4a76f0; /* A brighter blue for key actions */
+            --verified-color: #28a745; /* Keep green for verified */
+            --warning-color: #dc3545; /* Keep red for warning */
+            --warning-bg-soft: #f7d7d7; /* Softer red background */
+            --shadow-light: -8px -8px 16px rgba(255, 255, 255, 0.7); /* Light highlight shadow */
+            --shadow-dark: 8px 8px 16px rgba(163, 177, 198, 0.6); /* Darker main shadow */
+            --shadow-light-inset: inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+            --shadow-dark-inset: inset 6px 6px 12px rgba(163, 177, 198, 0.6);
+            --border-radius: 12px;
+            --font-family: 'Poppins', sans-serif;
         }
 
         /* --- Base & Reset --- */
@@ -40,47 +38,46 @@
 
         body {
             font-family: var(--font-family);
-            line-height: 1.65;
+            line-height: 1.7;
             background-color: var(--bg-color);
             color: var(--text-primary);
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            padding: 40px 20px; /* More padding */
+            padding: 40px 20px;
         }
 
-        /* --- Main Container Card --- */
+        /* --- Main Container --- */
         .container {
-            background-color: var(--card-bg);
-            padding: 40px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            max-width: 750px; /* Caps width on large screens */
-            width: 100%;    /* Takes available width on smaller screens */
+            background-color: var(--bg-color); /* Same as body for seamless look */
+            padding: 35px 40px;
+            border-radius: 20px; /* Softer corners */
+            box-shadow: var(--shadow-light), var(--shadow-dark); /* Outset shadow for the card */
+            max-width: 750px;
+            width: 100%;
             text-align: center;
-            border-top: 4px solid var(--primary-color);
             position: relative;
         }
 
         /* --- Typography --- */
         h1, h2 {
-            font-weight: 700;
-            line-height: 1.3;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--text-primary);
         }
 
         h1 {
-            font-size: 2.1rem;
-            color: var(--text-primary);
+            font-size: 2rem;
             margin-bottom: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         h2 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -93,85 +90,141 @@
             font-size: 1rem;
         }
         p.lead {
-            font-size: 1.1rem;
-            color: var(--text-primary);
-            margin-bottom: 25px;
-        }
-        p.verification-instruction {
             font-size: 1.05rem;
             color: var(--text-primary);
-            background-color: #eaf2f8; /* Light blue background for emphasis */
-            border-left: 4px solid var(--primary-color);
-            padding: 15px;
             margin-bottom: 30px;
-            border-radius: 4px;
+        }
+        p.verification-instruction {
+            font-size: 1rem;
+            color: var(--text-primary);
+            background-color: var(--bg-color); /* Match background */
+            border: none; /* Remove border */
+            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Indented look */
+            padding: 18px 20px;
+            margin-bottom: 30px;
+            border-radius: var(--border-radius);
             text-align: left;
         }
 
         strong { font-weight: 600; color: var(--text-primary); }
-        a { color: var(--primary-color); text-decoration: none; transition: color 0.2s ease; }
-        a:hover { color: var(--primary-color-darker); text-decoration: underline; }
+        a { color: var(--primary-accent); text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
+        a:hover { color: #3a5fc9; }
 
         /* --- Icons --- */
-        .icon { /* Generic icon styling */
-            width: 1.2em; /* Relative to font size */
+        .icon {
+            width: 1.2em;
             height: 1.2em;
             display: inline-block;
             vertical-align: middle;
             flex-shrink: 0;
         }
-        .icon-lg { width: 1.5em; height: 1.5em; }
-
-        /* --- Translate Button & Widget --- */
-        .translate-container {
-            margin-bottom: 25px; /* Space below button/dropdown */
-            text-align: center;
+        .icon-lg { width: 1.4em; height: 1.4em; }
+        .icon svg { /* Style embedded SVGs if needed */
+            fill: currentColor; /* Match surrounding text color */
         }
 
-        #translate-button {
-            background-color: var(--primary-color);
-            color: white;
+        /* --- Neumorphic Button Base Style --- */
+        .neumorphic-button {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
             border: none;
-            border-bottom: 3px solid var(--primary-color-darker);
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 12px 22px;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-family: var(--font-family);
-            font-weight: 600;
-            transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease, border-bottom-color 0.2s ease;
+            font-weight: 500;
+            transition: box-shadow 0.2s ease, color 0.2s ease;
             display: inline-flex;
             align-items: center;
+            justify-content: center; /* Center content */
             gap: 8px;
-            box-shadow: 0 3px 6px rgba(46, 134, 193, 0.2);
-            position: relative;
-            top: 0;
+            box-shadow: var(--shadow-light), var(--shadow-dark); /* Extruded look */
+            text-align: center;
+            white-space: nowrap;
         }
-        #translate-button:hover {
-            background-color: var(--primary-color-darker);
-            border-bottom-color: var(--primary-color-darkest);
-            box-shadow: 0 5px 8px rgba(46, 134, 193, 0.3);
+        .neumorphic-button:hover {
+            color: var(--primary-accent); /* Highlight on hover */
         }
-        #translate-button:active {
-             background-color: var(--primary-color-darkest);
-             box-shadow: 0 1px 3px rgba(46, 134, 193, 0.2);
-             top: 1px;
-             border-bottom-width: 2px;
+        .neumorphic-button:active {
+            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Pressed look */
+            color: var(--primary-accent);
         }
-
-        #translate-button img {
-            width: 20px;
-            height: 20px;
+        .neumorphic-button img, .neumorphic-button svg {
+            width: 18px;
+            height: 18px;
             vertical-align: middle;
         }
 
+        /* Apply neumorphic style to specific buttons */
+        #translate-button {
+            /* Inherits .neumorphic-button styles if class added, or style directly */
+            /* Example applying directly: */
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            border: none;
+            padding: 12px 22px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-family: var(--font-family);
+            font-weight: 500;
+            transition: box-shadow 0.2s ease, color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-light), var(--shadow-dark);
+        }
+        #translate-button:hover { color: var(--primary-accent); }
+        #translate-button:active { box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); color: var(--primary-accent); }
+
+        .action-button { /* Copy, Open, Join */
+             /* Base style similar to translate button */
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            border: none;
+            padding: 10px 18px; /* Slightly smaller */
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: var(--font-family);
+            font-weight: 500;
+            transition: box-shadow 0.2s ease, color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: var(--shadow-light), var(--shadow-dark);
+        }
+        .action-button:hover { color: var(--primary-accent); }
+        .action-button:active { box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); }
+        .action-button svg { width: 14px; height: 14px; }
+
+        .action-button.copied {
+            color: var(--verified-color); /* Green text when copied */
+            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Keep pressed look briefly */
+        }
+        .action-button.copied:hover {
+             color: var(--verified-color); /* Maintain green on hover when copied */
+        }
+
+
+        /* --- Translate Widget --- */
+        .translate-container {
+            margin-bottom: 30px; /* More space */
+            text-align: center;
+        }
         #google_translate_element {
             margin-top: 15px;
             display: none; /* Hide initially */
             text-align: center;
+            /* Basic styling for the dropdown itself */
+             background: var(--bg-color);
+             padding: 5px;
+             border-radius: var(--border-radius);
+             box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Indented container */
         }
         #google_translate_element.show {
-            display: block; /* Show when class is added */
+            display: inline-block; /* Display centered */
         }
 
         /* Prevent Google's top frame */
@@ -180,9 +233,9 @@
 
         /* --- Warning Section --- */
         .warning-section {
-            background-color: var(--warning-bg-light);
-            border: 1px solid #F5B7B1;
-            border-left: 5px solid var(--warning-color);
+            background-color: var(--warning-bg-soft); /* Softer warning bg */
+            border: none; /* Remove border */
+            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Indented look */
             padding: 25px;
             margin: 35px 0;
             border-radius: var(--border-radius);
@@ -193,24 +246,19 @@
             justify-content: flex-start;
             margin-bottom: 15px;
         }
-        .warning-section p {
-            color: var(--warning-text-dark);
+        .warning-section p, .warning-section li {
+            color: #b72c3a; /* Darker red text for contrast */
             margin-bottom: 10px;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
-        .warning-section p:last-child { margin-bottom: 0; }
         .warning-section ul {
-            color: var(--warning-text-dark);
-            list-style-position: inside;
-            padding-left: 5px;
+            list-style-position: outside; /* Standard bullet position */
+            padding-left: 20px; /* Indent list */
             margin-top: 10px;
             margin-bottom: 15px;
         }
-        .warning-section li {
-            margin-bottom: 5px;
-        }
         .warning-section .final-warning {
-             font-weight: 700;
+             font-weight: 600;
              color: var(--warning-color);
              margin-top: 15px;
         }
@@ -220,15 +268,16 @@
         .verified-section {
             margin-top: 35px;
             padding: 30px;
-            background-color: #F8F9FA;
-            border: 1px solid var(--border-color);
+            background-color: var(--bg-color); /* Match background */
+            border: none; /* Remove border */
+            box-shadow: var(--shadow-light), var(--shadow-dark); /* Extruded section */
             border-radius: var(--border-radius);
             text-align: left;
         }
         .verified-section h2 {
-            color: var(--verified-color);
+            color: var(--verified-color); /* Green heading */
             justify-content: flex-start;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(163, 177, 198, 0.3); /* Subtle separator */
             padding-bottom: 15px;
             margin-bottom: 25px;
         }
@@ -243,33 +292,37 @@
             display: flex;
             align-items: center;
             padding: 18px 0;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(163, 177, 198, 0.3); /* Subtle separator */
             gap: 15px;
-            flex-wrap: wrap; /* Allows wrapping on smaller screens */
+            flex-wrap: wrap;
         }
         .contact-item:last-child { border-bottom: none; padding-bottom: 0; }
         .contact-item:first-child { padding-top: 0; }
 
         .contact-icon {
-            color: var(--primary-color);
-            background-color: #EBF5FB;
-            border-radius: 50%;
-            padding: 8px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
+             background: var(--bg-color);
+             border-radius: 50%;
+             padding: 10px; /* Slightly more padding */
+             width: 44px; /* Slightly larger */
+             height: 44px;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             flex-shrink: 0;
+             box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Indented icon circle */
         }
-        .contact-icon svg { width: 20px; height: 20px; }
+        .contact-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--primary-accent); /* Color the icon */
+        }
 
         .contact-content {
             flex-grow: 1;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap; /* Allows button to wrap below text if needed */
+            flex-wrap: wrap;
             gap: 10px;
         }
 
@@ -277,60 +330,24 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            text-align: left; /* Ensure left align */
         }
 
         .contact-label {
-            font-size: 0.85rem;
+            font-size: 0.8rem; /* Smaller label */
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
         }
 
         .contact-value {
-            font-weight: 600;
+            font-weight: 500; /* Slightly lighter value */
             color: var(--text-primary);
             font-size: 1rem;
-            word-break: break-all; /* Prevents long text overflow */
+            word-break: break-all;
         }
-        .contact-value a { font-weight: 600; }
-
-        /* --- Action Button --- */
-        .action-button { /* For Copy/Open/Join buttons */
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-family: var(--font-family);
-            font-weight: 600;
-            transition: background-color 0.2s ease, box-shadow 0.2s ease;
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 2px 5px rgba(46, 134, 193, 0.2);
-        }
-        .action-button:hover {
-            background-color: var(--primary-color-darker);
-            box-shadow: 0 4px 8px rgba(46, 134, 193, 0.3);
-        }
-        .action-button:active {
-            background-color: var(--primary-color-darkest);
-            box-shadow: none;
-        }
-        .action-button svg { width: 14px; height: 14px; }
-
-        .action-button.copied {
-            background-color: var(--verified-color);
-            box-shadow: 0 2px 5px rgba(46, 204, 113, 0.2);
-        }
-        .action-button.copied:hover {
-             background-color: #27AE60;
-             box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
-        }
+        .contact-value a { font-weight: 500; }
 
         /* --- Footer --- */
         .footer-note {
@@ -346,34 +363,46 @@
             h1 { font-size: 1.8rem; }
             h2 { font-size: 1.3rem; }
             .contact-item {
-                flex-direction: column; /* Stack icon and content */
-                align-items: flex-start; /* Align items left */
-                gap: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px; /* Increased gap when stacked */
              }
             .contact-content {
-                flex-direction: column; /* Stack text and button */
-                align-items: flex-start; /* Align left */
-                width: 100%; /* Take full width */
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+                gap: 12px; /* Gap between text and button when stacked */
              }
             .action-button {
-                margin-top: 8px; /* Space when button wraps below text */
+                /* Don't necessarily need full width here, let's see */
+                 align-self: flex-start; /* Align button left */
+                 margin-top: 5px;
             }
         }
         @media (max-width: 480px) { /* Smaller mobile phones */
              h1 { font-size: 1.6rem; gap: 8px; }
              .container { padding: 25px 20px; }
              .warning-section, .verified-section { padding: 20px; }
-             .contact-icon { width: 36px; height: 36px; padding: 7px;}
+             .contact-icon { width: 40px; height: 40px; padding: 8px;}
              .contact-icon svg { width: 18px; height: 18px;}
              .contact-value { font-size: 0.95rem; }
-             /* Make buttons full width for easy tapping */
-             .action-button, #translate-button {
-                 width: 100%;
+             /* Make buttons easily tappable, maybe not full width always */
+             #translate-button {
+                 width: auto; /* Allow natural width */
+                 padding: 10px 18px;
+             }
+             .action-button {
+                  width: auto; /* Allow natural width */
+                  padding: 8px 15px;
+             }
+             .contact-content .action-button {
+                 width: 100%; /* Make copy/open/join full width when stacked */
                  justify-content: center;
              }
-             #translate-button {
-                 margin-bottom: 15px; /* Add space below full-width translate button */
+             #google_translate_element.show {
+                 width: 100%; /* Full width dropdown container */
              }
+
         }
     </style>
 </head>
@@ -383,8 +412,7 @@
 
         <!-- Translate Button and Dropdown Container -->
         <div class="translate-container">
-            <button id="translate-button">
-                <!-- Updated Google Translate Logo Image -->
+            <button id="translate-button" class="neumorphic-button"> {/* Added class */}
                 <img src="https://i.postimg.cc/8P8tymg8/Google-Translate-Small.png" alt="Google Translate Icon">
                 Translate
             </button>
@@ -394,46 +422,46 @@
 
         <h1>
             <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.07 14.07l-3.5-3.5a.996.996 0 1 1 1.41-1.41L10.93 14.24l5.5-5.5a.996.996 0 1 1 1.41 1.41l-6.91 6.91c-.38.38-.99.38-1.38-.04z"></path></svg>
-            KS Admin Official Verification
+            KS Admin Verification
         </h1>
-        <p class="lead">Confirm the genuine KS Admin contacts and protect yourself from impersonators.</p>
+        <p class="lead">Official contacts & critical warning about impersonators.</p>
 
         <!-- ====== CRITICAL SCAM WARNING SECTION ====== -->
         <section class="warning-section">
             <h2>
                 <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2V9h2v5z"></path></svg>
-                Beware of FAKE KS Admin Impersonators!
+                Beware: FAKE KS Admin Alert!
             </h2>
-            <p>It is confirmed that a <strong>FAKE KS Admin</strong> is actively trying to deceive users. This impersonator aims to <strong>steal your money and personal information</strong>.</p>
-            <p>The FAKE admin may try to trick you by:</p>
+            <p>A <strong>FAKE KS Admin</strong> is actively scamming users. This impersonator aims to <strong>steal funds & data</strong>.</p>
+            <p>The FAKE admin often:</p>
             <ul>
-                <li>Using a Telegram ID or Phone Number that looks <strong>very similar</strong> to the real one (check carefully!).</li>
-                <li>Contacting you <strong>first</strong> unexpectedly (unsolicited messages).</li>
-                <li>Creating a false sense of <strong>urgency</strong>, pressuring you to act quickly.</li>
-                <li>Asking for <strong>payments</strong>, especially upfront fees, for services or help.</li>
-                <li>Requesting sensitive <strong>personal details</strong> or account information.</li>
+                <li>Uses <strong>similar</strong> IDs/Numbers (Verify EXACTLY!).</li>
+                <li>Contacts you <strong>first</strong> (Unsolicited).</li>
+                <li>Creates <strong>false urgency</strong>.</li>
+                <li>Asks for <strong>payments</strong> or fees.</li>
+                <li>Requests sensitive personal/account info.</li>
             </ul>
-            <p><strong>DO NOT TRUST</strong> any contact information other than what is listed in the "Verified KS Admin Details" section below. Even a small difference means it's likely the FAKE admin.</p>
-            <p class="final-warning">Sending money or information to the FAKE admin will result in loss. Always verify using this page.</p>
+            <p><strong>TRUST ONLY</strong> the details listed below in the Verified section. Any difference is a major red flag!</p>
+            <p class="final-warning">Contacting the FAKE admin will lead to loss. Verify Carefully!</p>
         </section>
 
         <!-- ====== OFFICIAL ADMIN INFO SECTION ====== -->
         <section class="verified-section">
             <h2>
                 <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.95 7.53l-7.17 7.17a.996.996 0 0 1-1.41 0l-3.83-3.83a.996.996 0 1 1 1.41-1.41L10.94 15.1l6.07-6.07c.39-.39 1.02-.39 1.41 0 .4.39.4 1.03.03 1.41z"></path></svg>
-                The ONLY Verified KS Admin Details
+                Verified KS Admin Contacts
             </h2>
 
             <!-- Instruction about verification method -->
             <p class="verification-instruction">
-                <strong>Important:</strong> Verify the KS Admin's identity <strong>ONLY</strong> using the official contact methods listed below. Please <strong>confirm these details are correct *before* initiating contact</strong>. Do not rely on profile pictures for verification, as per the Admin's request.
+                <strong>Important:</strong> Verify the KS Admin's identity <strong>ONLY</strong> using these official methods. <strong>Confirm details *before* contacting</strong>. Do not use profile pictures for verification.
             </p>
 
             <ul class="contact-list">
                 <!-- Phone Number -->
                 <li class="contact-item">
                     <div class="contact-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg>
                     </div>
                     <div class="contact-content">
                          <div class="contact-text">
@@ -449,7 +477,7 @@
                 <!-- Telegram Direct Chat -->
                 <li class="contact-item">
                     <div class="contact-icon">
-                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.17 7.17l-1.97 9.28c-.1.48-.44.6-.84.38l-2.98-2.19-1.44-1.39-.08-.08c-.69-.67-.37-1.04.4-1.68l6.64-6.03c.3-.27-.04-.43-.45-.16L7.7 12.76l-2.97-.92c-.48-.15-.48-.47 0-.58l11.19-4.35c.4-.16.77.1.65.56z"></path></svg>
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.17 7.17l-1.97 9.28c-.1.48-.44.6-.84.38l-2.98-2.19-1.44-1.39-.08-.08c-.69-.67-.37-1.04.4-1.68l6.64-6.03c.3-.27-.04-.43-.45-.16L7.7 12.76l-2.97-.92c-.48-.15-.48-.47 0-.58l11.19-4.35c.4-.16.77.1.65.56z"></path></svg>
                     </div>
                     <div class="contact-content">
                          <div class="contact-text">
@@ -467,7 +495,7 @@
                 <!-- Telegram Channel -->
                  <li class="contact-item">
                      <div class="contact-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14 11c0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2 2-.9 2-2zm-2-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-13c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z"></path></svg> <!-- Generic Channel/Broadcast icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 11c0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2 2-.9 2-2zm-2-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-13c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z"></path></svg>
                     </div>
                     <div class="contact-content">
                         <div class="contact-text">
@@ -490,7 +518,7 @@
         </p>
     </div>
 
-    <!-- Existing Copy Script -->
+    <!-- Scripts (Copy & Translate) -->
     <script>
         function copyToClipboard(elementId, buttonElement) {
             const textToCopy = document.getElementById(elementId).innerText;
@@ -502,42 +530,26 @@
                       <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
                     </svg>
                     Copied!`;
-                buttonElement.classList.add('copied'); // Add class for styling
+                buttonElement.classList.add('copied');
                 buttonElement.disabled = true;
 
                 setTimeout(() => {
-                    buttonElement.innerHTML = originalButtonContent; // Restore original content
-                    buttonElement.classList.remove('copied'); // Remove class
+                    buttonElement.innerHTML = originalButtonContent;
+                    buttonElement.classList.remove('copied');
                     buttonElement.disabled = false;
                 }, 2500);
 
             }).catch(err => {
                 console.error('Failed to copy: ', err);
-                // Fallback using prompt
                 try {
                     window.prompt("Auto-copy failed. Press Ctrl+C (or Cmd+C) to copy manually:", textToCopy);
                  } catch (e) {
-                    alert("Failed to copy. Please copy the text manually."); // Final fallback
+                    alert("Failed to copy. Please copy the text manually.");
                  }
             });
         }
-    </script>
 
-    <!-- Google Translate Widget Scripts -->
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-          // Check if the element already exists to prevent duplicates
-          if (!document.querySelector("#google_translate_element > .skiptranslate")) {
-                new google.translate.TranslateElement({
-                    pageLanguage: 'en', // Source language of the page
-                    includedLanguages: 'ta,en,te,ml,or,mr,bn,gu,kn,pa,hi', // SPECIFIED LANGUAGES
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                    autoDisplay: false
-                }, 'google_translate_element');
-          }
-        }
-
-        // Add event listener for the custom translate button
+        // Translate Button Toggle Logic
         document.addEventListener('DOMContentLoaded', function() {
             const translateButton = document.getElementById('translate-button');
             const translateElement = document.getElementById('google_translate_element');
@@ -550,13 +562,26 @@
                              googleTranslateElementInit(); // Re-initialize if needed
                         }
                     }
-                    // Toggle the visibility
                     translateElement.classList.toggle('show');
                 });
             } else {
                 console.error("Translate button or element not found.");
             }
         });
+    </script>
+
+    <!-- Google Translate Widget Initialization -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+          if (!document.querySelector("#google_translate_element > .skiptranslate")) {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'ta,en,te,ml,or,mr,bn,gu,kn,pa,hi',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                }, 'google_translate_element');
+          }
+        }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
 

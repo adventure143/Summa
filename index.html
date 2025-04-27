@@ -22,7 +22,7 @@
             --shadow-light-inset: inset -6px -6px 12px rgba(255, 255, 255, 0.7);
             --shadow-dark-inset: inset 6px 6px 12px rgba(163, 177, 198, 0.6);
             --border-radius: 12px;
-            --border-radius-large: 20px; /* For larger button */
+            --border-radius-large: 20px; /* Adjusted for potentially larger button */
             --font-family: 'Poppins', sans-serif;
         }
 
@@ -216,12 +216,13 @@
             box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
             color: var(--primary-accent);
         }
-        .neumorphic-button img, .neumorphic-button svg {
+        .neumorphic-button svg { /* Style SVG icons in buttons */
             width: 18px;
             height: 18px;
-            vertical-align: middle;
+            fill: currentColor;
+            transition: fill 0.2s ease;
         }
-        .neumorphic-button:hover svg {
+         .neumorphic-button:hover svg {
              fill: var(--primary-accent);
         }
 
@@ -232,58 +233,43 @@
             position: relative;
         }
         #translate-button {
-            /* Increase size */
-            font-size: 2.2rem; /* ~2.85rem is large, slightly reduced */
-            padding: 25px 45px; /* ~3x padding */
-            gap: 20px; /* ~3x gap */
-            border-radius: var(--border-radius-large); /* Larger radius */
-            /* Base neumorphic styles inherited or applied */
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            border: none;
-            cursor: pointer;
-            font-family: var(--font-family);
-            font-weight: 600; /* Slightly bolder */
-            transition: box-shadow 0.2s ease, color 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            box-shadow: var(--shadow-light), var(--shadow-dark);
+            /* Use neumorphic base style */
+            /* Larger size from previous request */
+            font-size: 2.2rem;
+            padding: 25px 45px;
+            gap: 20px;
+            border-radius: var(--border-radius-large);
+            font-weight: 600;
             position: relative;
             z-index: 2;
             margin-bottom: 15px;
         }
-        #translate-button:hover { color: var(--primary-accent); }
-        #translate-button:active { box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); color: var(--primary-accent); }
-
-        #translate-button img { /* Increased icon size */
-             width: 50px; /* ~3x */
-             height: 50px; /* ~3x */
-             vertical-align: middle;
+        /* Size for the SVG icon inside the larger translate button */
+        #translate-button svg {
+             width: 45px;
+             height: 45px;
         }
 
-        #google_translate_element {
-            background: var(--bg-color);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
-            padding: 15px;
-            margin-top: -10px;
+        #google_translate_element { /* The container DIV */
+            /* Removed background, shadow, padding for direct appearance */
+            margin-top: -10px; /* Overlap slightly with button initially */
             position: relative;
             z-index: 1;
+            /* Animation Properties */
             max-height: 0;
             overflow: hidden;
             opacity: 0;
-            transition: max-height 0.5s ease-out, opacity 0.4s ease-in, padding 0.5s ease-out, margin-top 0.5s ease-out, visibility 0s linear 0.5s;
-            display: block;
-            visibility: hidden;
+            transition: max-height 0.5s ease-out, opacity 0.4s ease-in, margin-top 0.5s ease-out, visibility 0s linear 0.5s;
+            display: block; /* Need block for height animation */
+            visibility: hidden; /* Use visibility */
         }
-        #google_translate_element.show {
+        #google_translate_element.show { /* Visible state */
             visibility: visible;
             max-height: 300px;
             opacity: 1;
-            padding: 20px; /* More padding for larger dropdown */
-            margin-top: 15px; /* More space below large button */
-            transition: max-height 0.5s ease-out, opacity 0.4s ease-in 0.1s, padding 0.5s ease-out, margin-top 0.5s ease-out, visibility 0s linear 0s;
-            display: inline-block;
+            margin-top: 15px; /* Push down below button */
+            transition: max-height 0.5s ease-out, opacity 0.4s ease-in 0.1s, margin-top 0.5s ease-out, visibility 0s linear 0s;
+            display: inline-block; /* Allow centering */
             max-width: 90%;
             vertical-align: top;
         }
@@ -291,19 +277,19 @@
         #google_translate_element select.goog-te-combo {
              background-color: var(--bg-color);
              border: none;
-             padding: 10px 15px; /* Increase padding */
-             border-radius: 10px; /* Slightly larger radius */
+             padding: 10px 15px;
+             border-radius: 10px;
              font-family: var(--font-family);
-             font-size: 1.1rem; /* Larger font */
+             font-size: 1.1rem;
              color: var(--text-primary);
-             box-shadow: var(--shadow-light), var(--shadow-dark);
+             box-shadow: var(--shadow-light), var(--shadow-dark); /* Outset style */
              cursor: pointer;
              margin: 0;
              appearance: none;
              -webkit-appearance: none;
              -moz-appearance: none;
              outline: none;
-             min-width: 200px; /* Wider dropdown */
+             min-width: 200px;
              width: 100%;
         }
          /* Hide Google's "Powered by" link */
@@ -507,12 +493,12 @@
             h2 { font-size: 1.3rem; }
             .verified-section h2 { padding-left: 35px; }
             .animated-tick-container { width: 25px; height: 25px; }
-            #translate-button { /* Slightly smaller on tablets */
+            #translate-button {
                  font-size: 1.8rem;
                  padding: 20px 35px;
                  gap: 15px;
             }
-            #translate-button img { width: 40px; height: 40px; }
+            #translate-button svg { width: 40px; height: 40px; }
         }
         @media (max-width: 480px) {
              h1 { font-size: 1.6rem; gap: 8px; }
@@ -524,18 +510,18 @@
              /* Make all buttons full width */
              #translate-button, .action-button {
                   width: 100%;
-                  max-width: 350px; /* Allow slightly wider for large button */
+                  max-width: 350px;
                   margin-left: auto;
                   margin-right: auto;
                   justify-content: center;
              }
-             #translate-button { /* Reduce size again for small phones */
+              #translate-button { /* Reduce size again for small phones */
                  font-size: 1.5rem;
                  padding: 15px 25px;
                  gap: 12px;
                  margin-bottom: 10px; /* Less space below */
              }
-              #translate-button img { width: 35px; height: 35px; }
+              #translate-button svg { width: 35px; height: 35px; }
 
              .contact-item .action-button {
                  width: 100%;
@@ -566,8 +552,10 @@
         <!-- Translate Button and Dropdown Container -->
         <div class="translate-container">
             <button id="translate-button" class="neumorphic-button">
-                <!-- Restored Image Icon -->
-                <img src="https://i.postimg.cc/8P8tymg8/Google-Translate-Small.png" alt="Translate Icon">
+                <!-- Generic Language SVG Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
+                    <path d="M0 0h24v24H0V0z" fill="none"/><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+                </svg>
                 Translate
             </button>
             <!-- DIV for Google Translate Widget (Initially Hidden) -->

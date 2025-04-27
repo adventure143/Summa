@@ -22,6 +22,7 @@
             --shadow-light-inset: inset -6px -6px 12px rgba(255, 255, 255, 0.7);
             --shadow-dark-inset: inset 6px 6px 12px rgba(163, 177, 198, 0.6);
             --border-radius: 12px;
+            --border-radius-large: 20px; /* For larger button */
             --font-family: 'Poppins', sans-serif;
         }
 
@@ -215,23 +216,14 @@
             box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
             color: var(--primary-accent);
         }
-        /* Style for image icon within button */
-        .neumorphic-button img {
-            width: 20px; /* Adjust if needed */
-            height: 20px;
-            vertical-align: middle;
-        }
-        /* Style for SVG icons within button */
-        .neumorphic-button svg {
+        .neumorphic-button img, .neumorphic-button svg {
             width: 18px;
             height: 18px;
-            fill: currentColor;
-            transition: fill 0.2s ease;
+            vertical-align: middle;
         }
         .neumorphic-button:hover svg {
              fill: var(--primary-accent);
         }
-
 
         /* --- Translate Button & Widget --- */
         .translate-container {
@@ -240,50 +232,78 @@
             position: relative;
         }
         #translate-button {
-             position: relative;
-             z-index: 2;
-             margin-bottom: 15px;
+            /* Increase size */
+            font-size: 2.2rem; /* ~2.85rem is large, slightly reduced */
+            padding: 25px 45px; /* ~3x padding */
+            gap: 20px; /* ~3x gap */
+            border-radius: var(--border-radius-large); /* Larger radius */
+            /* Base neumorphic styles inherited or applied */
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-family);
+            font-weight: 600; /* Slightly bolder */
+            transition: box-shadow 0.2s ease, color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: var(--shadow-light), var(--shadow-dark);
+            position: relative;
+            z-index: 2;
+            margin-bottom: 15px;
         }
-        #google_translate_element { /* Dropdown container */
+        #translate-button:hover { color: var(--primary-accent); }
+        #translate-button:active { box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); color: var(--primary-accent); }
+
+        #translate-button img { /* Increased icon size */
+             width: 50px; /* ~3x */
+             height: 50px; /* ~3x */
+             vertical-align: middle;
+        }
+
+        #google_translate_element {
             background: var(--bg-color);
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset); /* Inset style */
+            box-shadow: var(--shadow-light-inset), var(--shadow-dark-inset);
             padding: 15px;
             margin-top: -10px;
             position: relative;
             z-index: 1;
-            /* Animation Properties */
             max-height: 0;
             overflow: hidden;
             opacity: 0;
-            transition: max-height 0.5s ease-out, opacity 0.4s ease-in, padding 0.5s ease-out, margin-top 0.5s ease-out, visibility 0s linear 0.5s; /* Delay visibility transition */
+            transition: max-height 0.5s ease-out, opacity 0.4s ease-in, padding 0.5s ease-out, margin-top 0.5s ease-out, visibility 0s linear 0.5s;
             display: block;
-            visibility: hidden; /* Use visibility */
+            visibility: hidden;
         }
-        #google_translate_element.show { /* Visible state */
+        #google_translate_element.show {
             visibility: visible;
             max-height: 300px;
             opacity: 1;
-            padding: 15px;
-            margin-top: 10px;
-            transition: max-height 0.5s ease-out, opacity 0.4s ease-in 0.1s, padding 0.5s ease-out, margin-top 0.5s ease-out, visibility 0s linear 0s; /* Remove visibility delay */
+            padding: 20px; /* More padding for larger dropdown */
+            margin-top: 15px; /* More space below large button */
+            transition: max-height 0.5s ease-out, opacity 0.4s ease-in 0.1s, padding 0.5s ease-out, margin-top 0.5s ease-out, visibility 0s linear 0s;
+            display: inline-block;
+            max-width: 90%;
+            vertical-align: top;
         }
          /* Style Google's select dropdown */
         #google_translate_element select.goog-te-combo {
              background-color: var(--bg-color);
              border: none;
-             padding: 8px 12px;
-             border-radius: 8px;
+             padding: 10px 15px; /* Increase padding */
+             border-radius: 10px; /* Slightly larger radius */
              font-family: var(--font-family);
+             font-size: 1.1rem; /* Larger font */
              color: var(--text-primary);
-             box-shadow: var(--shadow-light), var(--shadow-dark); /* Outset style */
+             box-shadow: var(--shadow-light), var(--shadow-dark);
              cursor: pointer;
              margin: 0;
              appearance: none;
              -webkit-appearance: none;
              -moz-appearance: none;
              outline: none;
-             min-width: 150px;
+             min-width: 200px; /* Wider dropdown */
              width: 100%;
         }
          /* Hide Google's "Powered by" link */
@@ -487,6 +507,12 @@
             h2 { font-size: 1.3rem; }
             .verified-section h2 { padding-left: 35px; }
             .animated-tick-container { width: 25px; height: 25px; }
+            #translate-button { /* Slightly smaller on tablets */
+                 font-size: 1.8rem;
+                 padding: 20px 35px;
+                 gap: 15px;
+            }
+            #translate-button img { width: 40px; height: 40px; }
         }
         @media (max-width: 480px) {
              h1 { font-size: 1.6rem; gap: 8px; }
@@ -498,11 +524,19 @@
              /* Make all buttons full width */
              #translate-button, .action-button {
                   width: 100%;
-                  max-width: 300px;
+                  max-width: 350px; /* Allow slightly wider for large button */
                   margin-left: auto;
                   margin-right: auto;
                   justify-content: center;
              }
+             #translate-button { /* Reduce size again for small phones */
+                 font-size: 1.5rem;
+                 padding: 15px 25px;
+                 gap: 12px;
+                 margin-bottom: 10px; /* Less space below */
+             }
+              #translate-button img { width: 35px; height: 35px; }
+
              .contact-item .action-button {
                  width: 100%;
                  max-width: 300px;
@@ -687,7 +721,6 @@
                 let isTranslateInitialized = false;
 
                 translateButton.addEventListener('click', function() {
-                    // Initialize only ONCE on the first click if not already done
                     if (!isTranslateInitialized && typeof google !== 'undefined' && google.translate && google.translate.TranslateElement) {
                          if (!translateElement.querySelector(".skiptranslate")) {
                              try {
@@ -705,7 +738,6 @@
                          console.error("Google Translate library not loaded yet.");
                     }
 
-                    // Toggle visibility only if it seems ready or initialized
                     if (isTranslateInitialized || translateElement.querySelector(".skiptranslate")) {
                          translateElement.classList.toggle('show');
                     } else {
